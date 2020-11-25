@@ -3,6 +3,7 @@ package comp303.a4.entities;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
 
 @Entity
 public class Booking {
@@ -10,6 +11,7 @@ public class Booking {
 	 * Removed "date" and "time" due to ambiguity
 	 * -> Replaced with "purchaseDate" and "viewingDate"
 	 */
+	@Id
 	private int bookingId;
 	private String movieName;
 	private int custId;

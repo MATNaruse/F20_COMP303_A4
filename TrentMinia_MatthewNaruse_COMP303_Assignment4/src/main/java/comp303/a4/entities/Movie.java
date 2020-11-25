@@ -9,9 +9,11 @@
 package comp303.a4.entities;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
 
 @Entity
 public class Movie {
+	@Id
 	private int movieId;
 	private String movieName;
 	private String movieLanguage;
