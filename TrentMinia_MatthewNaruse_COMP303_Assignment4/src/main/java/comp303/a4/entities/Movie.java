@@ -50,4 +50,11 @@ public class Movie {
 	public void setDuration(int duration) {
 		this.duration = duration;
 	}
+	
+	public Movie(String name, String lang, String genr, int dur) {
+		this.movieName = name;
+		this.movieLanguage = lang;
+		this.movieGenre = genr;
+		this.duration = dur;
+	}
 }
