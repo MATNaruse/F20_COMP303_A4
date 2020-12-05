@@ -31,6 +31,7 @@ public class CustomerController {
 	private CustomerRepo custRepo;
 	
 	private static HttpSession session;
+	private static Customer loginCust;
 	
 	@GetMapping("/register")
 	public String newRegisterForm() {
@@ -44,10 +45,15 @@ public class CustomerController {
 											@RequestParam("address") String address,
 											@RequestParam("city") String city,
 											@RequestParam("email") String email,
-											@RequestParam("phoneNumber") String phone) {
+											@RequestParam("phoneNumber") String phone,
+											HttpServletRequest request) {
 		
 		Customer customer = new Customer(user, pass, custName, address, city, email, phone);
 		custRepo.save(customer);
+		// Set customer as the "logged in customer"
+		session = request.getSession();
+		session.setAttribute("loginCust", customer);
+		updateLoginCust(request);
 		return new ModelAndView("index");
 	}
 	
@@ -83,11 +89,48 @@ public class CustomerController {
 			// Set customer as the "logged in customer"
 			session = request.getSession();
 			session.setAttribute("loginCust", loginCust);
+			updateLoginCust(request);
 			// Return them to index
 			MVpostLogin = new ModelAndView("index");
 		}
 		return MVpostLogin;
 	}
 	
+	@GetMapping("/logout")
+	public String get_logout(HttpServletRequest request) {
+		session = request.getSession();
+		session.setAttribute("loginCust", null);
+		loginCust = null;
+		return "index";
+	}
 	
+	@GetMapping("/profile")
+	public ModelAndView get_profile(HttpServletRequest request) {
+		ModelAndView MVgetProfile;
+		// checking login customer
+		updateLoginCust(request);
+		
+		
+		if(loginCust==null) {
+			// if no customer logged in, send to Login Page
+			MVgetProfile = new ModelAndView("login");
+			MVgetProfile.addObject("err_msg", "Please Log In First");
+		}
+		
+		else {
+			// Pass logged in customer to Profile
+			MVgetProfile = new ModelAndView("profile");
+			MVgetProfile.addObject("loginCust", loginCust);
+		}
+		
+		return MVgetProfile;
+	}
+	
+	
+	private void updateLoginCust(HttpServletRequest request) {
+		session=request.getSession();
+		loginCust= (Customer) session.getAttribute("loginCust");
+		if(loginCust==null){System.out.println("NO Login Customer Found");}
+		else {System.out.println(loginCust.getUsername());}
+	}
 }
