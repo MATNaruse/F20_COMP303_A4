@@ -14,9 +14,13 @@
 		<div class="card-columns">
 			<div class="card" th:each="movie : ${movieList}">
 				<h2 th:text="${movie.movieName}"/>
+				<p th:text="${movie.movieDirector}"/>
 				<p th:text="${movie.movieLanguage}"/>
 				<p th:text="${movie.movieGenre}"/>
+				<p th:text="${movie.movieBlurb}"/>
+				<p th:text="${movie.movieRating}"/>
 				<p th:text="${movie.duration}"/>
+				<!--image source goes here-->
 			</div>
 		</div>
 	</body>

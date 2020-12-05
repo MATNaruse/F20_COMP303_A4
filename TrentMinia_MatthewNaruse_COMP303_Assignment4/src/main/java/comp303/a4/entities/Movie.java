@@ -16,6 +16,7 @@ public class Movie {
 	@Id
 	private int movieId;
 	private String movieName;
+	private String movieDirector;
 	private String movieLanguage;
 	private String movieGenre;
 	private String movieBlurb;
@@ -34,6 +35,12 @@ public class Movie {
 	}
 	public void setMovieName(String movieName) {
 		this.movieName = movieName;
+	}
+	public String getMovieDirector() {
+		return movieDirector;
+	}
+	public void setMovieDirector(String movieDirector) {
+		this.movieDirector = movieDirector;
 	}
 	public String getMovieLanguage() {
 		return movieLanguage;
@@ -73,6 +80,7 @@ public class Movie {
 	}
 	
 	public Movie(String name, 
+				 String dir,
 				 String lang, 
 				 String genr,
 				 String blur,
@@ -80,6 +88,7 @@ public class Movie {
 				 int dur,
 				 String img) {
 		this.movieName = name;
+		this.movieDirector = dir;
 		this.movieLanguage = lang;
 		this.movieGenre = genr;
 		this.movieBlurb = blur;

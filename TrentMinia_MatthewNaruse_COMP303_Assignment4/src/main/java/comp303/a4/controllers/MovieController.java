@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import comp303.a4.entities.Movie;
+import comp303.a4.SeedData;
 
 @Controller
 public class MovieController {
@@ -23,19 +24,9 @@ public class MovieController {
 	@GetMapping("/Movies")
 	public ModelAndView allMovies() {
 		ModelAndView MVAllMovies = new ModelAndView("view-movies");
-		MVAllMovies.addObject("movieList", this.dummyMovie());
-		return MVAllMovies;
-	}
-	
-	
-	private List<Movie> dummyMovie(){
 		List<Movie> mList = new ArrayList<Movie>();
-		
-		mList.add(new Movie("MovieA", "ENG", "Action", 120));
-		mList.add(new Movie("MovieB", "ENG", "Bio", 120));
-		mList.add(new Movie("MovieC", "ENG", "Comedy", 120));
-		mList.add(new Movie("MovieD", "ENG", "Disaster", 120));
-		mList.add(new Movie("MovieE", "ENG", "Eclectic", 120));
-		return mList;
+		SeedData.loadMovieData(mList);
+		MVAllMovies.addObject("movieList", mList);
+		return MVAllMovies;
 	}
 }
