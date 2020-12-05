@@ -1,22 +1,11 @@
 package comp303.a4;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import comp303.a4.entities.Movie;
 
 public class SeedData {
     public static void loadMovieData(List<Movie> list) {
-        list.add(new Movie(
-            "Movie Name",
-            "Director",
-            "English",
-            "Genre",
-            "This movie will knock your socks off or some shit",
-            "PG-18",
-            200,
-            "img/img1.jpg"
-        ));
         list.add(new Movie(
             "Tenet",
             "Christopher Nolan",
@@ -25,18 +14,18 @@ public class SeedData {
             "A secret agent embarks on a dangerous, time-bending mission to prevent the start of World War III.",
             "PG-13",
             150,
-            "img/img1.jpg"
+            "images/tenet.jpg"
         ));
         list.add(new Movie(
             "Jingle Jangle: A Christmas Journey",
-            "Christopher Nolan",
+            "David E. Talbert",
             "English",
             "Musical, Fantasy",
             "Decades after his apprentice betrays him, a once joyful toy maker finds new hope when his bright young " +
                 "granddaughter appears on his doorstep.",
             "PG",
             122,
-            "img/img1.jpg"
+            "images/jinglejangle.jpg"
         ));
         list.add(new Movie(
             "Godmothered",
@@ -47,19 +36,19 @@ public class SeedData {
                 " fairy godmothers.",
             "PG",
             110,
-            "img/img1.jpg"
+            "images/godmothered.jpg"
         ));
         list.add(new Movie(
-            "The Phenomenon",
-            "James Fox",
+            "Uncle Frank",
+            "Alan Ball",
             "English",
-            "Documentary",
-            "This documentary examines unidentified aerial phenomenon. With testimony from" + 
-                " high-ranking government officials, and NASA Astronauts, Senator Harry Reid says it 'makes the" +
-                " incredible credible.'",
-            "Unrated",
-            100,
-            "img/img1.jpg"
+            "Comedy, Drama",
+            "In 1973, when Frank Bledsoe and his 18-year-old niece Beth take a road trip from Manhattan to" +
+                "Creekville, South Carolina, for the family patriarch's funeral, they're unexpectedly joined" +
+                "by Frank's lover, Walid.",
+            "R",
+            95,
+            "images/unclefrank.jpg"
         ));
         list.add(new Movie(
             "Freaky",
@@ -70,7 +59,7 @@ public class SeedData {
                 " than 24 hours before the change becomes permanent. ",
             "R",
             102,
-            "img/img1.jpg"
+            "images/freaky.jpg"
         ));
         list.add(new Movie(
             "Fatman",
@@ -82,7 +71,7 @@ public class SeedData {
                 " of coal in his stocking. ",
             "R",
             100,
-            "img/img1.jpg"
+            "images/fatman.jpg"
         ));
         list.add(new Movie(
             "Let Him Go",
@@ -93,7 +82,7 @@ public class SeedData {
                 " only grandson.",
             "R",
             113,
-            "img/img1.jpg"
+            "images/lethimgo.jpg"
         ));
         list.add(new Movie(
             "Mulan",
@@ -103,17 +92,19 @@ public class SeedData {
             "A young Chinese maiden disguises herself as a male warrior in order to save her father.",
             "PG-13",
             115,
-            "img/img1.jpg"
+            "images/mulan.jpg"
         ));
         list.add(new Movie(
             "Ghosts of War",
             "Eric Bress",
             "English",
             "Horror, Thriller, War",
-            "Five American soldiers assigned to hold a French Chateau near the end of World War II. This unexpected respite quickly descends into madness when they encounter a supernatural enemy more terrifying than anything seen on the battlefield.",
+            "Five American soldiers assigned to hold a French Chateau near the end of World War II. This unexpected" +
+                "respite quickly descends into madness when they encounter a supernatural enemy more terrifying than " + 
+                "anything seen on the battlefield.",
             "R",
             94,
-            "img/img1.jpg"
+            "images/ghostsofwar.jpg"
         ));
         list.add(new Movie(
             "Rudolph the Red-Nosed Reindeer",
@@ -123,7 +114,18 @@ public class SeedData {
             "A misfit reindeer and his friends look for a place that will accept them.",
             "G",
             47,
-            "img/img1.jpg"
+            "images/rudolphtherednosedreindeer.jpg"
+        ));
+        list.add(new Movie(
+            "Jingle All the Way",
+            "Brian Levant",
+            "English",
+            "Adventure, Comedy, Family",
+            "A father vows to get his son a Turbo Man action figure for Christmas. However, every store is sold out" +
+                "of them, and he must travel all over town and compete with everybody else in order to find one.",
+            "PG",
+            89,
+            "images/jinglealltheway.jpg"
         ));
     }
 }
