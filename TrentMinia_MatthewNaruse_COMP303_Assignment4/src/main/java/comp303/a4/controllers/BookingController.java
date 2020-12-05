@@ -19,6 +19,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -26,6 +27,7 @@ import org.springframework.web.servlet.ModelAndView;
 import comp303.a4.entities.Booking;
 import comp303.a4.entities.Customer;
 import comp303.a4.repositories.BookingRepo;
+import comp303.a4.repositories.CustomerRepo;
 import comp303.a4.repositories.MovieRepo;
 
 @Controller
@@ -36,6 +38,9 @@ public class BookingController {
 	
 	@Autowired
 	MovieRepo movieRepo;
+	
+	@Autowired
+	CustomerRepo custRepo;
 	
 	private static HttpSession session;
 	private static Customer loginCust;
@@ -75,14 +80,29 @@ public class BookingController {
 		// Creating New Booking Object
 		Booking newBooking = new Booking(movieName, loginCust.getCustId(), amtPaid, new Date(), viewDate, venue);
 		
-		// Saving to 
+		// Saving to Repo
 		bookRepo.save(newBooking);
 		
+		// TO CHANGE -> Returning to Index
 		MVpostNewBooking = new ModelAndView("index");
 		
 		return MVpostNewBooking;
 	}
 	
+	
+	@GetMapping("/view-booking/{id}")
+	public ModelAndView get_viewBooking(@PathVariable("id") int bookId) {
+		ModelAndView MVgetViewBooking = new ModelAndView("view-booking");
+		
+		Booking bking =  bookRepo.getOne(bookId);
+		Customer cust = custRepo.getOne(bking.getCustId());
+		MVgetViewBooking.addObject("booking", bking);
+		MVgetViewBooking.addObject("custName", cust.getCustName());
+		
+		return MVgetViewBooking;
+		
+		
+	}
 	
 	private void updateLoginCust(HttpServletRequest request) {
 		session=request.getSession();

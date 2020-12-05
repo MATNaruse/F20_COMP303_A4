@@ -73,6 +73,8 @@ public class Booking {
 		this.venue = venue;
 	}
 	
+	public Booking() {};
+	
 	public Booking(String movieName, int custId, double amtPaid, Date purchDate, Date viewDate, String venue) {
 		this.movieName = movieName;
 		this.custId = custId;
