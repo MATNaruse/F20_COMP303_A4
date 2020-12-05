@@ -20,7 +20,7 @@ import comp303.a4.entities.Movie;
 @Controller
 public class MovieController {
 
-	@GetMapping("/Movies")
+	@GetMapping("/view-movies")
 	public ModelAndView allMovies() {
 		ModelAndView MVAllMovies = new ModelAndView("view-movies");
 		MVAllMovies.addObject("movieList", this.dummyMovie());
