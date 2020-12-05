@@ -3,7 +3,10 @@ package comp303.a4.entities;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 public class Booking {
@@ -12,9 +15,13 @@ public class Booking {
 	 * -> Replaced with "purchaseDate" and "viewingDate"
 	 */
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int bookingId;
+	
+	@NotBlank(message="Must pick a Movie")
 	private String movieName;
 	private int custId;
+	
 	private double amountPaid;
 	private Date purchaseDate;
 	private Date viewingDate;

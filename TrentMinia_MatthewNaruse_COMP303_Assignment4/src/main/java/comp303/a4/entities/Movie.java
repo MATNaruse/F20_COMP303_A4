@@ -18,7 +18,10 @@ public class Movie {
 	private String movieName;
 	private String movieLanguage;
 	private String movieGenre;
+	private String movieBlurb;
+	private String movieRating;
 	private int duration;
+	private String imgSrc;
 	
 	public int getMovieId() {
 		return movieId;
@@ -49,5 +52,31 @@ public class Movie {
 	}
 	public void setDuration(int duration) {
 		this.duration = duration;
+	}
+	
+	public String getMovieBlurb() {
+		return movieBlurb;
+	}
+	public void setMovieBlurb(String movieBlurb) {
+		this.movieBlurb = movieBlurb;
+	}
+	public String getMovieRating() {
+		return movieRating;
+	}
+	public void setMovieRating(String movieRating) {
+		this.movieRating = movieRating;
+	}
+	public String getImgSrc() {
+		return imgSrc;
+	}
+	public void setImgSrc(String imgSrc) {
+		this.imgSrc = imgSrc;
+	}
+	
+	public Movie(String name, String lang, String genr, int dur) {
+		this.movieName = name;
+		this.movieLanguage = lang;
+		this.movieGenre = genr;
+		this.duration = dur;
 	}
 }
