@@ -82,6 +82,8 @@ public class Movie {
 		this.imgSrc = imgSrc;
 	}
 	
+	public Movie() {};
+	
 	public Movie(String name, 
 				 String dir,
 				 String lang, 
@@ -90,7 +92,6 @@ public class Movie {
 				 String rat,
 				 int dur,
 				 String img) {
-	public Movie() {};
 		this.movieName = name;
 		this.movieDirector = dir;
 		this.movieLanguage = lang;
