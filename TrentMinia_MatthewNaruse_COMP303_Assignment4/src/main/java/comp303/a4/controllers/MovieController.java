@@ -11,14 +11,19 @@ package comp303.a4.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import comp303.a4.entities.Movie;
+import comp303.a4.repositories.MovieRepo;
 
 @Controller
 public class MovieController {
+	
+	@Autowired
+	MovieRepo movieRepo;
 
 	@GetMapping("/view-movies")
 	public ModelAndView allMovies() {
@@ -41,6 +46,10 @@ public class MovieController {
 		mList.add(new Movie("MovieC", "ENG", "Comedy", 120));
 		mList.add(new Movie("MovieD", "ENG", "Disaster", 120));
 		mList.add(new Movie("MovieE", "ENG", "Eclectic", 120));
+		
+		for(Movie m : mList) {
+			movieRepo.save(m);
+		}
 		return mList;
 	}
 }

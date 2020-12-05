@@ -74,4 +74,13 @@ public class Booking {
 	public void setVenue(String venue) {
 		this.venue = venue;
 	}
+	
+	public Booking(String movieName, Customer cust, double amtPaid, Date purchDate, Date viewDate, String venue) {
+		this.movieName = movieName;
+		this.custId = cust;
+		this.amountPaid = amtPaid;
+		this.purchaseDate = purchDate;
+		this.viewingDate = viewDate;
+		this.venue = venue;
+	}
 }

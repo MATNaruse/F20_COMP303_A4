@@ -126,7 +126,7 @@ public class CustomerController {
 		HttpSession sess = request.getSession();
 		Customer lInCust = (Customer) sess.getAttribute("loginCust");
 		
-		if(loginCust==null) {
+		if(lInCust==null) {
 			// if no customer logged in, send to Login Page
 			MVensureLogin = new ModelAndView("login");
 			MVensureLogin.addObject("err_msg", "Please Log In First");

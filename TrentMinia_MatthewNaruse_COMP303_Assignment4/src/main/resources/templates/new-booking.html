@@ -15,11 +15,21 @@
 			<table class="table">
 				<tr>
 					<th><label for="movieName">Movie Name</label></th>
-					<td><input id="movieName" name="movieName"/></td>
+					<td>
+						<select id="movieName" name="movieName">
+							<option th:each="movie: ${movieList}" th:value="${movie}" th:text="${movie}"></option>
+						</select>
+					</td>
 				</tr>
 				<tr>
-					<th><label for="amountPaid">Amount Paid</label></th>
-					<td><input id="amountPaid" name="amountPaid"/></td>
+					<th>Adults : $12.00</th>
+					<td><input type="number" id="ticketAdult" name="ticketAdult" value="0"/></td>
+
+					<th>Senior/Student: $8.00</th>
+					<td><input type="number" id="ticketSenStu" name="ticketSenStu" value="0" /></td>
+
+					<th>Children : $6.50</th>
+					<td><input type="number" id="ticketChild" name="ticketChild" value="0"/></td>
 				</tr>
 				<tr>
 					<th><label for="viewingDate">Viewing Date</label></th>
@@ -27,7 +37,15 @@
 				</tr>
 				<tr>
 					<th><label for="venue">Venue</label></th>
-					<td><input id="venue" name="venue"/></td>
+					<td>
+						<select id="venue" name="venue">
+							<option value="cinema1">Cinema 1</option>
+							<option value="cinema2">Cinema 2</option>
+							<option value="cinema3">Cinema 3</option>
+							<option value="cinema4">Cinema 4</option>
+							<option value="cinema5">Cinema 5</option>
+						</select>
+					</td>
 				</tr>
 			</table>
 			<input type="submit"/>
