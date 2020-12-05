@@ -9,30 +9,29 @@
 <html xmlns:th="http://thymeleaf.org">
 	<head th:include="fragment :: header"/>
 	<body class="container">
-		<div th:replace="fragment :: navbar"></div>	
-		<h1>Register New Customer</h1>
-		
-		<form action="register" method="POST">
+		<div th:replace="fragment :: navbar"></div>		
+		<h1>New Movie</h1>
+		<form action="new-movier" method="POST">
 			<table class="table">
 				<tr>
-					<th><label for="Username">User Name</label></th>
-					<td><input id="Username" name="Username"/></td>
+					<th><label for="movieName">Movie Name</label></th>
+					<td><input id="movieName" name="movieName"/></td>
 				</tr>
 				<tr>
-					<th><label for="Password">Password</label></th>
-					<td><input id="Password" name="Password"/></td>
+					<th><label for="movieLanguage">Movie Language</label></th>
+					<td><input id="movieLanguage" name="movieLanguage"/></td>
 				</tr>
 				<tr>
-					<th><label for="custName">Your Name</label></th>
-					<td><input id="custName" name="custName"/></td>
+					<th><label for="movieGenre">Movie Genre</label></th>
+					<td><input id="movieGenre" name="movieGenre"/></td>
 				</tr>
 				<tr>
-					<th><label for="address">Your Address</label></th>
-					<td><input id="address" name="address"/></td>
+					<th><label for="duration">Duration</label></th>
+					<td><input id="duration" name="duration"/></td>
 				</tr>
 				<tr>
-					<th><label for="city">City</label></th>
-					<td><input id="city" name="city"/></td>
+					<th><label for="imgPoster">Upload Movie Poster</label></th>
+					<td><input type="file" accept="images/*" id="imgPoster" name="imgPoster"/></td>
 				</tr>
 				<tr>
 					<th><label for="email">Email</label></th>

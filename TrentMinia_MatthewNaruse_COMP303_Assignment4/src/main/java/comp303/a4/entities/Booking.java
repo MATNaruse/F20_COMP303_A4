@@ -2,10 +2,13 @@ package comp303.a4.entities;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
 
 @Entity
@@ -20,6 +23,7 @@ public class Booking {
 	
 	@NotBlank(message="Must pick a Movie")
 	private String movieName;
+
 	private int custId;
 	
 	private double amountPaid;
@@ -67,6 +71,15 @@ public class Booking {
 		return venue;
 	}
 	public void setVenue(String venue) {
+		this.venue = venue;
+	}
+	
+	public Booking(String movieName, int custId, double amtPaid, Date purchDate, Date viewDate, String venue) {
+		this.movieName = movieName;
+		this.custId = custId;
+		this.amountPaid = amtPaid;
+		this.purchaseDate = purchDate;
+		this.viewingDate = viewDate;
 		this.venue = venue;
 	}
 }
