@@ -3,7 +3,18 @@
     width: auto;
 }
 
-#imgSrcCarousel {
+/* #imgSrcCarousel {
     max-height: 200px;
     width: auto;
-}
+} */
+
+.carousel-item {
+    width: 100%;
+    height: 600px;
+  }
+  
+  .carousel-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: scale-down;
+  }
