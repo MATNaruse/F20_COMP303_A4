@@ -81,6 +81,7 @@ public class Customer {
 		this.phoneNumber = phoneNumber;
 	}
 	
+	public Customer() {};
 	
 	public Customer(String user, String pass, String name, String address, String city, String email, String phone) {
 		this.Username = user;

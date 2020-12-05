@@ -8,6 +8,11 @@
 
 package comp303.a4.controllers;
 
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +29,8 @@ public class CustomerController {
 
 	@Autowired
 	private CustomerRepo custRepo;
+	
+	private static HttpSession session;
 	
 	@GetMapping("/register")
 	public String newRegisterForm() {
@@ -43,4 +50,36 @@ public class CustomerController {
 		custRepo.save(customer);
 		return new ModelAndView("index");
 	}
+	
+	@GetMapping("/login")
+	public String get_Login() {
+		return "login";
+	}
+	
+	@PostMapping("/login")
+	public ModelAndView post_Login(@RequestParam("Username") String user, @RequestParam("Password") String pass, HttpServletRequest request) {
+		ModelAndView MVpostLogin = null;
+		
+		Customer loginCust = custRepo.loginValidation(user, pass);
+		
+		System.out.println(loginCust);
+		if(loginCust==null) {
+			MVpostLogin = new ModelAndView("login");
+			List<Customer> userCheck = custRepo.usernameExistCheck(user);
+			
+			String err_msg = userCheck.size() == 0 ? "Username does NOT exist!" : "Password does not match!";
+			
+			MVpostLogin.addObject("err_msg", err_msg);
+		}
+		else {
+			session = request.getSession();
+			session.setAttribute("loginCust", loginCust);
+			MVpostLogin = new ModelAndView("index");
+		}
+		
+		
+		return MVpostLogin;
+	}
+	
+	
 }
