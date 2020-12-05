@@ -2,3 +2,8 @@
     max-height: 150px; 
     width: auto;
 }
+
+#imgSrcCarousel {
+    max-height: 200px;
+    width: auto;
+}
