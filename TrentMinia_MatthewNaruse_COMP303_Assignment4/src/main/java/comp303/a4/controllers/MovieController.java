@@ -40,15 +40,20 @@ public class MovieController {
 	
 	private List<Movie> dummyMovie(){
 		List<Movie> mList = new ArrayList<Movie>();
-		
-		mList.add(new Movie("MovieA", "ENG", "Action", 120));
-		mList.add(new Movie("MovieB", "ENG", "Bio", 120));
-		mList.add(new Movie("MovieC", "ENG", "Comedy", 120));
-		mList.add(new Movie("MovieD", "ENG", "Disaster", 120));
-		mList.add(new Movie("MovieE", "ENG", "Eclectic", 120));
-		
-		for(Movie m : mList) {
-			movieRepo.save(m);
+		if(movieRepo.count() == 0) {		
+			mList.add(new Movie("MovieA", "ENG", "Action", 120));
+			mList.add(new Movie("MovieB", "ENG", "Bio", 120));
+			mList.add(new Movie("MovieC", "ENG", "Comedy", 120));
+			mList.add(new Movie("MovieD", "ENG", "Disaster", 120));
+			mList.add(new Movie("MovieE", "ENG", "Eclectic", 120));
+			
+			for(Movie m : mList) {
+				movieRepo.save(m);
+			}
+		}
+
+		else {
+			mList = movieRepo.findAll();
 		}
 		return mList;
 	}

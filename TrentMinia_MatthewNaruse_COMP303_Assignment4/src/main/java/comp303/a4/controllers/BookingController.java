@@ -68,7 +68,7 @@ public class BookingController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Booking newBooking = new Booking(movieName, loginCust, amtPaid, new Date(), viewDate, venue);
+		Booking newBooking = new Booking(movieName, loginCust.getCustId(), amtPaid, new Date(), viewDate, venue);
 		
 		bookRepo.save(newBooking);
 		

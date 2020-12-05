@@ -76,6 +76,8 @@ public class Movie {
 		this.imgSrc = imgSrc;
 	}
 	
+	public Movie() {};
+		
 	public Movie(String name, String lang, String genr, int dur) {
 		this.movieName = name;
 		this.movieLanguage = lang;
