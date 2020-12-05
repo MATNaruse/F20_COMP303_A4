@@ -39,15 +39,9 @@ public class CustomerController {
 	}
 	
 	@PostMapping("/register")
-	public ModelAndView registerNewCustomer(@RequestParam("Username") String user, 
-											@RequestParam("Password") String pass,
-											@RequestParam("custName") String custName,
-											@RequestParam("address") String address,
-											@RequestParam("city") String city,
-											@RequestParam("email") String email,
-											@RequestParam("phoneNumber") String phone,
-											HttpServletRequest request) {
-		
+	public ModelAndView registerNewCustomer(@RequestParam("Username") String user, @RequestParam("Password") String pass, @RequestParam("custName") String custName,
+											@RequestParam("address") String address, @RequestParam("city") String city, @RequestParam("email") String email,
+											@RequestParam("phoneNumber") String phone, HttpServletRequest request) {
 		Customer customer = new Customer(user, pass, custName, address, city, email, phone);
 		custRepo.save(customer);
 		// Set customer as the "logged in customer"
@@ -99,6 +93,7 @@ public class CustomerController {
 	@GetMapping("/logout")
 	public String get_logout(HttpServletRequest request) {
 		session = request.getSession();
+		// Removing loginCust from session, and returning to index
 		session.setAttribute("loginCust", null);
 		loginCust = null;
 		return "index";
@@ -109,7 +104,6 @@ public class CustomerController {
 		ModelAndView MVgetProfile;
 		// checking login customer
 		updateLoginCust(request);
-		
 		
 		if(loginCust==null) {
 			// if no customer logged in, send to Login Page
@@ -124,6 +118,25 @@ public class CustomerController {
 		}
 		
 		return MVgetProfile;
+	}
+	
+	
+	public static ModelAndView EnsureLoggedIn(String successPage, HttpServletRequest request) {
+		ModelAndView MVensureLogin;
+		HttpSession sess = request.getSession();
+		Customer lInCust = (Customer) sess.getAttribute("loginCust");
+		
+		if(loginCust==null) {
+			// if no customer logged in, send to Login Page
+			MVensureLogin = new ModelAndView("login");
+			MVensureLogin.addObject("err_msg", "Please Log In First");
+		}
+		
+		else {
+			// Pass logged in customer to Profile
+			MVensureLogin = new ModelAndView(successPage);
+		}
+		return MVensureLogin;
 	}
 	
 	

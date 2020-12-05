@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<!-- 
+ * COMP303-001 Assignment 4
+ * Due Date: Dec 06, 2020
+ * Submitted: ??? ##, 2020
+ * 301 041 132 : Trent Minia
+ * 300 549 638 : Matthew Naruse
+ -->
+<html xmlns:th="http://thymeleaf.org">
+	<head th:include="fragment :: header"/>
+	<body class="container">
+		<div th:replace="fragment :: navbar"></div>		
+		<h1>New Movie</h1>
+		<form action="new-movier" method="POST">
+			<table class="table">
+				<tr>
+					<th><label for="movieName">Movie Name</label></th>
+					<td><input id="movieName" name="movieName"/></td>
+				</tr>
+				<tr>
+					<th><label for="movieLanguage">Movie Language</label></th>
+					<td><input id="movieLanguage" name="movieLanguage"/></td>
+				</tr>
+				<tr>
+					<th><label for="movieGenre">Movie Genre</label></th>
+					<td><input id="movieGenre" name="movieGenre"/></td>
+				</tr>
+				<tr>
+					<th><label for="duration">Duration</label></th>
+					<td><input id="duration" name="duration"/></td>
+				</tr>
+				<tr>
+					<th><label for="imgPoster">Upload Movie Poster</label></th>
+					<td><input type="file" accept="images/*" id="imgPoster" name="imgPoster"/></td>
+				</tr>
+				<tr>
+					<th><label for="email">Email</label></th>
+					<td><input id="email" name="email"/></td>
+				</tr>
+				<tr>
+					<th><label for="phoneNumber">Phone Number</label></th>
+					<td><input id="phoneNumber" name="phoneNumber"/></td>
+				</tr>
+			</table>
+			<input type="submit"/>
+		</form>
+	</body>
+		<div th:include="fragment :: footer"></div>
+</html>

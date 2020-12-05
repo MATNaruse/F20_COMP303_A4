@@ -2,10 +2,12 @@ package comp303.a4.entities;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
 
 @Entity
@@ -20,7 +22,10 @@ public class Booking {
 	
 	@NotBlank(message="Must pick a Movie")
 	private String movieName;
-	private int custId;
+	
+	// May remove this to simplify things
+	@OneToOne(cascade=CascadeType.ALL)
+	private Customer custId;
 	
 	private double amountPaid;
 	private Date purchaseDate;
@@ -39,10 +44,10 @@ public class Booking {
 	public void setMovieName(String movieName) {
 		this.movieName = movieName;
 	}
-	public int getCustId() {
+	public Customer getCustId() {
 		return custId;
 	}
-	public void setCustId(int custId) {
+	public void setCustId(Customer custId) {
 		this.custId = custId;
 	}
 	public double getAmountPaid() {

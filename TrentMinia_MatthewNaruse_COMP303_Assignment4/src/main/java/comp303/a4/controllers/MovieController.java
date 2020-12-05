@@ -27,6 +27,11 @@ public class MovieController {
 		return MVAllMovies;
 	}
 	
+	@GetMapping("/admin/new-movie")
+	public String getNewMovie() {
+		return "new-movie";
+	}
+	
 	
 	private List<Movie> dummyMovie(){
 		List<Movie> mList = new ArrayList<Movie>();
