@@ -55,12 +55,15 @@ public class BookingController {
 										@RequestParam("ticketSenStu") String tickSenStu, @RequestParam("ticketChild") String tickChild,
 										@RequestParam("viewingDate") String viewingDateStr, @RequestParam("venue") String venue,
 										HttpServletRequest request) {
-		System.out.println(viewingDateStr);
 		ModelAndView MVpostNewBooking;
+		// Ensure Current Login Customer
 		updateLoginCust(request);
-		String dateMask = "yyyy-MM-dd";
 		
+		// Calc amount "paid" - Adult $12, Senior/Student $8, Child $6.50
 		double amtPaid = (Integer.parseInt(tickAdult) * 12) + (Integer.parseInt(tickSenStu) * 8) + (Integer.parseInt(tickChild) * 6.50);
+		
+		// Parse viewingDate
+		String dateMask = "yyyy-MM-dd";
 		Date viewDate = new Date();
 		try {
 			viewDate = new SimpleDateFormat(dateMask).parse(viewingDateStr);
@@ -68,8 +71,11 @@ public class BookingController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		// Creating New Booking Object
 		Booking newBooking = new Booking(movieName, loginCust.getCustId(), amtPaid, new Date(), viewDate, venue);
 		
+		// Saving to 
 		bookRepo.save(newBooking);
 		
 		MVpostNewBooking = new ModelAndView("index");

@@ -2,13 +2,11 @@ package comp303.a4.entities;
 
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.NotBlank;
 
 @Entity
@@ -18,7 +16,8 @@ public class Booking {
 	 * -> Replaced with "purchaseDate" and "viewingDate"
 	 */
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator="book_gen")
+	@SequenceGenerator(name="book_gen", sequenceName="book_seq")
 	private int bookingId;
 	
 	@NotBlank(message="Must pick a Movie")
