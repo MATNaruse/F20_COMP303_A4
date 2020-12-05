@@ -16,10 +16,11 @@ public class Movie {
 	@Id
 	private int movieId;
 	private String movieName;
+	private String movieDirector;
 	private String movieLanguage;
 	private String movieGenre;
 	private String movieBlurb;
-	private String movieRating;
+	private String movieRating; // movie rating for appropriate audiences
 	private int duration;
 	private String imgSrc;
 	
@@ -35,6 +36,12 @@ public class Movie {
 	public void setMovieName(String movieName) {
 		this.movieName = movieName;
 	}
+	public String getMovieDirector() {
+		return movieDirector;
+	}
+	public void setMovieDirector(String movieDirector) {
+		this.movieDirector = movieDirector;
+	}
 	public String getMovieLanguage() {
 		return movieLanguage;
 	}
@@ -47,13 +54,6 @@ public class Movie {
 	public void setMovieGenre(String movieGenre) {
 		this.movieGenre = movieGenre;
 	}
-	public int getDuration() {
-		return duration;
-	}
-	public void setDuration(int duration) {
-		this.duration = duration;
-	}
-	
 	public String getMovieBlurb() {
 		return movieBlurb;
 	}
@@ -66,6 +66,12 @@ public class Movie {
 	public void setMovieRating(String movieRating) {
 		this.movieRating = movieRating;
 	}
+	public int getDuration() {
+		return duration;
+	}
+	public void setDuration(int duration) {
+		this.duration = duration;
+	}
 	public String getImgSrc() {
 		return imgSrc;
 	}
@@ -73,10 +79,21 @@ public class Movie {
 		this.imgSrc = imgSrc;
 	}
 	
-	public Movie(String name, String lang, String genr, int dur) {
+	public Movie(String name, 
+				 String dir,
+				 String lang, 
+				 String genr,
+				 String blur,
+				 String rat,
+				 int dur,
+				 String img) {
 		this.movieName = name;
+		this.movieDirector = dir;
 		this.movieLanguage = lang;
 		this.movieGenre = genr;
+		this.movieBlurb = blur;
+		this.movieRating = rat;
 		this.duration = dur;
+		this.imgSrc = img;
 	}
 }
