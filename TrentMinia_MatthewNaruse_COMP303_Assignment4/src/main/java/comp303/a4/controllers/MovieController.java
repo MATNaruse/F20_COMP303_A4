@@ -20,6 +20,13 @@ import comp303.a4.entities.Movie;
 import comp303.a4.SeedData;
 import comp303.a4.repositories.MovieRepo;
 
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
 @Controller
 public class MovieController {
 	
@@ -38,8 +45,15 @@ public class MovieController {
 	}
 	
 	@GetMapping("/admin/new-movie")
-	public String getNewMovie() {
+	public String getNewMovie(Movie movie) {
 		return "new-movie";
+	}
+
+	@PostMapping("/add")
+	public String addMovie(Movie movie, BindingResult result, Model model) {
+		movieRepo.save(movie);
+		model.addAttribute("movies", movieRepo.findAll());
+		return ("index");
 	}
 	
 }
