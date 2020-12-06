@@ -27,6 +27,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import comp303.a4.entities.Booking;
 import comp303.a4.entities.Customer;
+import comp303.a4.repositories.BookingRepo;
 import comp303.a4.repositories.CustomerRepo;
 
 
@@ -35,6 +36,9 @@ public class CustomerController {
 
 	@Autowired
 	private CustomerRepo custRepo;
+	
+	@Autowired
+	private BookingRepo bookRepo;
 	
 	private static HttpSession session;
 	public static Customer loginCust;
@@ -120,6 +124,8 @@ public class CustomerController {
 		else {
 			// Pass logged in customer to Profile
 			model.addAttribute("loginCust", loginCust);
+			List<Booking> bookings = bookRepo.findAllBookingsByCustId(loginCust.getCustId());
+			model.addAttribute("loginBookings", bookings);
 			return "profile";
 		}
 	}
