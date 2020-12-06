@@ -139,7 +139,7 @@ public class CustomerController {
 		else if (loginCust.getCustId() != custId) {
 			// If trying to edit another profile 
 			model.addAttribute("err_msg", "You do not have permission to edit that profile!");
-			return "index";
+			return "redirect:/index";
 		}
 		
 		else {
@@ -163,7 +163,7 @@ public class CustomerController {
 			updateLoginCust(request);
 			session.setAttribute("loginCust", customer);
 			model.addAttribute("loginCust", customer);
-			return get_profile(model, request);
+			return "redirect:/" + get_profile(model, request);
 		}
 	}
 	
@@ -180,7 +180,7 @@ public class CustomerController {
 		else if (loginCust.getCustId() != custId) {
 			// If trying to delete another profile 
 			model.addAttribute("err_msg", "You do not have permission to edit that profile!");
-			return "index";
+			return "redirect:/index";
 		}
 		else {
 			// If trying to delete own profile
@@ -196,7 +196,7 @@ public class CustomerController {
 		session = request.getSession();
 		session.setAttribute("loginCust", null);
 		model.addAttribute("err_msg", "Profile Deleted");
-		return "index";
+		return "redirect:/index";
 		
 	}
 	//

@@ -119,7 +119,7 @@ public class BookingController {
 		booking.setAmountPaid(booking.getAmountPaid());
 		bookRepo.save(booking);
 		
-		return get_viewBooking(booking.getBookingId(), model);
+		return "redirect:" + get_viewBooking(booking.getBookingId(), model);
 	}
 	
 	@GetMapping("/delete-booking/{id}")
@@ -140,6 +140,6 @@ public class BookingController {
 	@PostMapping("/delete-booking/{id}")
 	public String post_deleteBooking(@PathVariable("id") int bookId) {
 		bookRepo.deleteById(bookId);
-		return "/index";
+		return "redirect:/index";
 	}
 }
