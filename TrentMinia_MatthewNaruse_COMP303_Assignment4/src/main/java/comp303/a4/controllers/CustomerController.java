@@ -50,6 +50,8 @@ public class CustomerController {
 		if(result.hasErrors()) {return get_register(model);}
 		else {
 			custRepo.save(customer);
+			session = request.getSession();
+			session.setAttribute("loginCust", customer);
 			return "index";
 		}
 	}
@@ -165,8 +167,38 @@ public class CustomerController {
 		}
 	}
 	
+	@GetMapping("/delete-profile/{id}")
+	public String get_deleteProfile(@PathVariable("id") int custId, Model model, HttpServletRequest request) {
+		updateLoginCust(request);
+		
+		if(loginCust==null) {
+			// if no customer logged in, send to Login Page
+			model.addAttribute("err_msg", "Please log in first");
+			return get_login(model);
+		}
+		
+		else if (loginCust.getCustId() != custId) {
+			// If trying to delete another profile 
+			model.addAttribute("err_msg", "You do not have permission to edit that profile!");
+			return "index";
+		}
+		else {
+			// If trying to delete own profile
+			Customer cust = custRepo.getOne(loginCust.getCustId());
+			model.addAttribute("delCust", cust);
+			return "delete-profile";
+		}
+	}
 	
-	
+	@PostMapping("/delete-profile/{id}")
+	public String post_deleteProfile(@PathVariable("id") int custId, HttpServletRequest request, Model model) {
+		custRepo.deleteById(custId);
+		session = request.getSession();
+		session.setAttribute("loginCust", null);
+		model.addAttribute("err_msg", "Profile Deleted");
+		return "index";
+		
+	}
 	//
 	// ==================================================================
 	//

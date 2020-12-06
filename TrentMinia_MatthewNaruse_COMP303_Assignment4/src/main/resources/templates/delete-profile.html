@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<!-- 
+ * COMP303-001 Assignment 4
+ * Due Date: Dec 06, 2020
+ * Submitted: ??? ##, 2020
+ * 301 041 132 : Trent Minia
+ * 300 549 638 : Matthew Naruse
+ -->
+<html xmlns:th="http://thymeleaf.org">
+	<head th:include="fragment :: header"/>
+	<body class="container">
+		<div th:replace="fragment :: navbar"></div>		
+		<h1>Delete Profile</h1>
+			<table class="table">
+				<tr>
+					<th>User Name</th>
+					<td><p th:text="${delCust.Username}"/></td>
+				</tr>
+				<tr>
+					<th>Password</th>
+					<td><p th:text="${delCust.Password}"/></td>
+				</tr>
+				<tr>
+					<th>Your Name</th>
+					<td><p th:text="${delCust.custName}"/></td>
+				</tr>
+				<tr>
+					<th>Your Address</th>
+					<td><p th:text="${delCust.address}"/></td>
+				</tr>
+				<tr>
+					<th>City</th>
+					<td><p th:text="${delCust.city}"/></td>
+				</tr>
+				<tr>
+					<th>Email</th>
+					<td><p th:text="${delCust.email}"/></td>
+				</tr>
+				<tr>
+					<th>Phone Number</th>
+					<td><p th:text="${delCust.phoneNumber}"/></td>
+				</tr>
+			</table>
+			<form action="#" th:action="@{/delete-profile/{custId}(custId=${delCust.custId})}" method="POST">
+				<input type="submit" class="btn btn-danger" value="Delete Profile"/>
+			</form>
+	</body>
+		<div th:include="fragment :: footer"></div>
+</html>
+<!-- NOTE: Update the Profile here like A2 -->
