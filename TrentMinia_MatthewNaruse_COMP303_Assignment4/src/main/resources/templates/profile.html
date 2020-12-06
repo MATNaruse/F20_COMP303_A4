@@ -11,36 +11,60 @@
 	<body class="container">
 		<div th:replace="fragment :: navbar"></div>		
 		<h1>Profile</h1>
-			<table class="table">
-				<tr>
-					<th>User Name</th>
-					<td><p th:text="${loginCust.Username}"/></td>
-				</tr>
-				<tr>
-					<th>Password</th>
-					<td><p th:text="${loginCust.Password}"/></td>
-				</tr>
-				<tr>
-					<th>Your Name</th>
-					<td><p th:text="${loginCust.custName}"/></td>
-				</tr>
-				<tr>
-					<th>Your Address</th>
-					<td><p th:text="${loginCust.address}"/></td>
-				</tr>
-				<tr>
-					<th>City</th>
-					<td><p th:text="${loginCust.city}"/></td>
-				</tr>
-				<tr>
-					<th>Email</th>
-					<td><p th:text="${loginCust.email}"/></td>
-				</tr>
-				<tr>
-					<th>Phone Number</th>
-					<td><p th:text="${loginCust.phoneNumber}"/></td>
-				</tr>
-			</table>
+		<div class="row d-flex justify-content-center">
+			<div class="card col-lg-3 col-sm-10">
+				<table class="table">
+					<tr>
+						<th>User Name</th>
+						<td><p th:text="${loginCust.Username}" /></td>
+					</tr>
+					<tr>
+						<th>Password</th>
+						<td><p th:text="${loginCust.Password}" /></td>
+					</tr>
+					<tr>
+						<th>Your Name</th>
+						<td><p th:text="${loginCust.custName}" /></td>
+					</tr>
+					<tr>
+						<th>Your Address</th>
+						<td><p th:text="${loginCust.address}" /></td>
+					</tr>
+					<tr>
+						<th>City</th>
+						<td><p th:text="${loginCust.city}" /></td>
+					</tr>
+					<tr>
+						<th>Email</th>
+						<td><p th:text="${loginCust.email}" /></td>
+					</tr>
+					<tr>
+						<th>Phone Number</th>
+						<td><p th:text="${loginCust.phoneNumber}" /></td>
+					</tr>
+				</table>
+			</div>
+			<div class="card profile-orders col-lg-8 col-sm-10">
+				<div th:if="${loginBookings != null}">
+					<table class="table">
+						<tr>
+							<th>Booking ID</th>
+							<th>Movie Name</th>
+							<th>Viewing Date</th>
+						</tr>
+						<tr th:each="book:${loginBookings}">
+							<td th:text="${book.bookingId}"/>
+							<td th:text="${book.movieName}"/>
+							<td th:text="${book.viewingDate}"/>
+							<td><a class="btn btn-primary" th:href="@{/view-booking/{bookId}(bookId=${book.bookingId})}">View Booking</a></td>
+						</tr>
+					</table>
+				</div>
+				<div th:if="${loginBookings == null}">
+					<h2 class="card-title">You have no Bookings!</h2>
+				</div>
+			</div>
+		</div>
 	</body>
 		<div th:include="fragment :: footer"></div>
 </html>
