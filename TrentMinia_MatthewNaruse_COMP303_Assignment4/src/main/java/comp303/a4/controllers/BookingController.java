@@ -119,7 +119,7 @@ public class BookingController {
 		booking.setAmountPaid(booking.getAmountPaid());
 		bookRepo.save(booking);
 		
-		return "redirect:" + get_viewBooking(booking.getBookingId(), model);
+		return "redirect:/" + get_viewBooking(booking.getBookingId(), model) + "/" + bookId;
 	}
 	
 	@GetMapping("/delete-booking/{id}")

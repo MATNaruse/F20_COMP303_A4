@@ -36,6 +36,10 @@
 					<th>Customer Name</th>
 					<td><p th:text="${custName}"/></td>
 				</tr>
+				<tr>
+					<td><a class="btn btn-warning" th:href="@{/update-booking/{bookId}(bookId=${booking.bookingId})}">Update Booking</a></td>
+					<td><a class="btn btn-danger" th:href="@{/delete-booking/{bookId}(bookId=${booking.bookingId})}">Delete Booking</a></td>
+				</tr>
 			</table>
 	</body>
 		<div th:include="fragment :: footer"></div>
