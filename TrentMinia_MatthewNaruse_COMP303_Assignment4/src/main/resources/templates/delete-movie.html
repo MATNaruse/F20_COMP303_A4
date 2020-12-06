@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<!-- 
+ * COMP303-001 Assignment 4
+ * Due Date: Dec 06, 2020
+ * Submitted: ??? ##, 2020
+ * 301 041 132 : Trent Minia
+ * 300 549 638 : Matthew Naruse
+ -->
+<html xmlns:th="http://thymeleaf.org">
+	<head th:include="fragment :: header"/>
+	<body class="container">
+		<div th:replace="fragment :: navbar"></div>		
+		<h1>Confirm Delete Movie</h1>
+		<table class="table">
+			<tr>
+				<th>Movie Name</th>
+				<td><p th:text="${delMovie.movieName}"/></td>
+			</tr>
+			<tr>
+				<th>Director</th>
+				<td><p th:text="${delMovie.movieDirector}"/></td>
+			</tr>
+			<tr>
+				<th>Viewing Date</th>
+				<td><p th:text="${delMovie.movieLanguage}"/></td>
+			</tr>
+			<tr>
+				<th>Amount Paid</th>
+				<td><p th:text="${delMovie.movieGenre}"/></td>
+			</tr>
+			<tr>
+				<th>Venue</th>
+				<td><p th:text="${delMovie.movieBlurb}"/></td>
+			</tr>
+			<tr>
+				<th>Customer Name</th>
+				<td><p th:text="${delMovie.movieRating}"/></td>
+			</tr>
+		</table>
+		<form action="#" th:action="@{/delete-movie/{movieId}(movieId=${delMovie.movieId})}" method="POST">
+            <input type="submit" class="btn btn-danger" value="Delete Movie"/>
+		</form>
+	</body>
+		<div th:include="fragment :: footer"></div>
+</html>

@@ -82,5 +82,21 @@ public class MovieController {
 		movieRepo.save(movie);
 		return ("index");
 	}
+
+	// Deleting A Movie
+	@GetMapping("admin/delete-movie/{id}")
+	public String get_deleteMovie(@PathVariable("id") int movieId, Model model) {
+		Movie mov = movieRepo.findById(movieId)
+		.orElseThrow(() -> new IllegalArgumentException("Invalid movie number: " + movieId));
+
+		model.addAttribute("delMovie", mov);
+		return "delete-movie";
+	}
+
+	@PostMapping("/delete-movie/{id}")
+	public String post_deleteMovie(@PathVariable("id") int movieId) {
+		movieRepo.deleteById(movieId);
+		return "index";
+	}
 	
 }
