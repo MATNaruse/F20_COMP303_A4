@@ -23,6 +23,7 @@ import comp303.a4.repositories.MovieRepo;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -63,7 +64,7 @@ public class MovieController {
 	// Updating A Movie
 	// ----------------
 	@GetMapping("/admin/update-movie/{id}")
-	public String get_updatMovie(@PathVariable("id") int movieId, Model model) {
+	public String get_updateMovie(@PathVariable("id") int movieId, Model model) {
 		Movie mov = movieRepo.findById(movieId)
 		.orElseThrow(() -> new IllegalArgumentException("Invalid movie number: " + movieId));
 
@@ -73,10 +74,13 @@ public class MovieController {
 	}
 	
 	@PostMapping("/update-movie/{id}")
-	public String post_updateMovie(@PathVariable("id") int movieId, Movie movie, BindingResult result, Model model) {
+	public String post_updateMovie(@PathVariable("id") int movieId, @ModelAttribute Movie movie, BindingResult result, Model model) {
+		if(result.hasErrors()) {
+			return get_updateMovie(movie.getMovieId(), model);
+		}
+		
 		movieRepo.save(movie);
-		model.addAttribute("movies", movieRepo.findAll());
-		return ("update-success");
+		return ("index");
 	}
 	
 }

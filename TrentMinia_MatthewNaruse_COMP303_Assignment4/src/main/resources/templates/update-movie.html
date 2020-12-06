@@ -12,8 +12,9 @@
 		<div th:replace="fragment :: navbar"></div>		
 		<h1>Update Movie</h1>
 
-		<form action="#" th:action="@{/update-movie/{id}(id=${upMovie.movieId})}" th:object="${upMovie}" method="post">
-            <table class="table">
+		<form action="#" th:action="@{/update-movie/{movieId}(movieId=${upMovie.movieId})}" th:object="${upMovie}" method="POST">
+			<input type="hidden" th:field="*{movieId}" /> 
+			<table class="table">
 				<tr>
 					<th><label for="movieName">Movie Name</label></th>
 					<td><input type="text" th:field="*{movieName}" id="movieName" name="movieName" th:value="${upMovie.movieName}"/></td>
