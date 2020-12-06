@@ -48,7 +48,7 @@
 					</td>
 				</tr>
 			</table>
-			<input type="number" id="custId" th:value="${Booking.custId}" th:field="*{custId}" readonly/>
+			<input type="hidden" id="custId" th:field="*{custId}" th:value="${Booking.custId}"/>
 			<input type="submit"/>
 		</form>
 	</body>

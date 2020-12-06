@@ -61,17 +61,11 @@ public class BookingController {
 	@GetMapping("/new-booking")
 	public String get_newBooking(Model model, HttpServletRequest request){
 		System.out.println("GET_NEWBOOKING");
-		Booking newbook = new Booking();
-		newbook.setCustId(CustomerController.loginCust.getCustId());
+		Booking newbook = new Booking(CustomerController.loginCust.getCustId());
+		newbook.setPurchaseDate(new Date());
+		System.out.println("CUSTID" + newbook.getCustId());
 		model.addAttribute("Booking", newbook);
 		model.addAttribute("movieList", movieRepo.getAllMovieNames());
-//		int custId = CustomerController.loginCust.getCustId();
-//		System.out.println("PRELOGINCUSTID:" + custId);
-//		Customer cust = custRepo.getOne(custId);
-//		System.out.println("CUST_CUSTID" + cust.getCustId());
-//		model.addAttribute("loginCustId", custRepo.getOne(custId));
-//		
-		System.out.println("LOGINCUSTID:" + CustomerController.loginCust.getCustId());
 		return "new-booking";
 	}
 	
@@ -81,6 +75,7 @@ public class BookingController {
 		System.out.println("POST_NEWBOOKING");
 		if(result.hasErrors()) {return get_newBooking(model, request);}
 		else { 
+			Booking.setAmountPaid(Booking.getAmountPaid());
 			bookRepo.save(Booking); 
 			return "index";	
 		}

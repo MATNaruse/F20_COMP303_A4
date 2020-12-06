@@ -7,7 +7,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -22,17 +26,22 @@ public class Booking {
 	@SequenceGenerator(name="book_gen", sequenceName="book_seq")
 	private int bookingId;
 	
-	@NotBlank(message="Must pick a Movie")
+	@NotEmpty(message="Must pick a Movie")
 	private String movieName;
-
+	
+	@Min(value=1)
 	private int custId;
+	@Min(value=0)
 	private int tickAdult;
+	@Min(value=0)
 	private int tickSenStu;
+	@Min(value=0)
 	private int tickChild;
 	private double amountPaid;
 	
-	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date purchaseDate;
+	
+	@NotNull(message="Must pick a View Date")
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date viewingDate;
 	
@@ -100,7 +109,18 @@ public class Booking {
 		this.venue = venue;
 	}
 	
-	public Booking() {};
+	public Booking() {
+		this.purchaseDate = new Date();
+		this.amountPaid = (tickAdult * 12) + (tickSenStu * 8) + (tickChild * 6.50);
+		System.out.println("BOOKING():CUSTID " + this.custId);
+	};
+	
+	public Booking(int custId) {
+		this.purchaseDate = new Date();
+		this.amountPaid = (tickAdult * 12) + (tickSenStu * 8) + (tickChild * 6.50);
+		this.custId = custId;
+		System.out.println("BOOKING():CUSTID " + this.custId);
+	};
 	
 	public Booking(String movieName, int custId, int tAdult, int tSenStu, int tChild, Date purchDate, Date viewDate, String venue) {
 		this.movieName = movieName;
