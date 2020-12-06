@@ -12,11 +12,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 
 @Entity
 public class Movie {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator="mov_gen")
+	@SequenceGenerator(name="mov_gen", sequenceName="mov_seq")
 	private int movieId;
 	private String movieName;
 	private String movieDirector;

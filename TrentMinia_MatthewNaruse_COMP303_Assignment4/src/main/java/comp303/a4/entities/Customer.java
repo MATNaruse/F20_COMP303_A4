@@ -12,13 +12,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.NotBlank;
 
 @Entity
 public class Customer {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator="cust_gen")
+	@SequenceGenerator(name="cust_gen", sequenceName="cust_seq")
 	private int custId;
 	
 	@NotBlank(message="Must pick a User Name")

@@ -30,7 +30,9 @@ public class MovieController {
 	public ModelAndView allMovies() {
 		ModelAndView MVAllMovies = new ModelAndView("view-movies");
 		List<Movie> mList = new ArrayList<Movie>();
-		SeedData.loadMovieData(mList);
+		
+		if(movieRepo.count() == 0) {SeedData.loadMovieData(movieRepo);}
+		mList = movieRepo.findAll();
 		MVAllMovies.addObject("movieList", mList);
 		return MVAllMovies;
 	}
@@ -40,24 +42,4 @@ public class MovieController {
 		return "new-movie";
 	}
 	
-	
-//	private List<Movie> dummyMovie(){
-//		List<Movie> mList = new ArrayList<Movie>();
-//		if(movieRepo.count() == 0) {		
-//			mList.add(new Movie("MovieA", "ENG", "Action", 120));
-//			mList.add(new Movie("MovieB", "ENG", "Bio", 120));
-//			mList.add(new Movie("MovieC", "ENG", "Comedy", 120));
-//			mList.add(new Movie("MovieD", "ENG", "Disaster", 120));
-//			mList.add(new Movie("MovieE", "ENG", "Eclectic", 120));
-//			
-//			for(Movie m : mList) {
-//				movieRepo.save(m);
-//			}
-//		}
-//
-//		else {
-//			mList = movieRepo.findAll();
-//		}
-//		return mList;
-//	}
 }
