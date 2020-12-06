@@ -12,13 +12,18 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -43,129 +48,98 @@ public class BookingController {
 	CustomerRepo custRepo;
 	
 	private static HttpSession session;
-	private static Customer loginCust;
 	
+//	@GetMapping("/new-booking")
+//	public ModelAndView get_newBooking(HttpServletRequest request){
+//		ModelAndView MVgetNewBooking;
+//		updateLoginCust(request);
+//		MVgetNewBooking = CustomerController.EnsureLoggedIn("new-booking", request);
+//		List<String> movieList = movieRepo.getAllMovieNames();
+//		MVgetNewBooking.addObject("movieList", movieList);
+//		return MVgetNewBooking;
+//	}
+
 	@GetMapping("/new-booking")
-	public ModelAndView get_newBooking(HttpServletRequest request){
-		ModelAndView MVgetNewBooking;
-		updateLoginCust(request);
-		MVgetNewBooking = CustomerController.EnsureLoggedIn("new-booking", request);
-		List<String> movieList = movieRepo.getAllMovieNames();
-		MVgetNewBooking.addObject("movieList", movieList);
-		return MVgetNewBooking;
+	public String get_newBooking(Model model, HttpServletRequest request){
+		System.out.println("GET_NEWBOOKING");
+		Booking newbook = new Booking(CustomerController.loginCust.getCustId());
+		newbook.setPurchaseDate(new Date());
+		System.out.println("CUSTID" + newbook.getCustId());
+		model.addAttribute("Booking", newbook);
+		model.addAttribute("movieList", movieRepo.getAllMovieNames());
+		return "new-booking";
 	}
 	
 	@PostMapping("/new-booking")
-	public ModelAndView post_newBooking(@RequestParam("movieName") String movieName, @RequestParam("ticketAdult") String tickAdult,
-										@RequestParam("ticketSenStu") String tickSenStu, @RequestParam("ticketChild") String tickChild,
-										@RequestParam("viewingDate") String viewingDateStr, @RequestParam("venue") String venue,
-										HttpServletRequest request) {
-		ModelAndView MVpostNewBooking;
-		// Ensure Current Login Customer
-		updateLoginCust(request);
-
-		// Parse viewingDate
-		String dateMask = "yyyy-MM-dd";
-		Date viewDate = new Date();
-		try {
-			viewDate = new SimpleDateFormat(dateMask).parse(viewingDateStr);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	public String post_newBooking(@Valid @ModelAttribute Booking Booking, BindingResult result, Model model, HttpServletRequest request) {
+		System.out.println(result.getAllErrors());
+		System.out.println("POST_NEWBOOKING");
+		if(result.hasErrors()) {return get_newBooking(model, request);}
+		else { 
+			Booking.setAmountPaid(Booking.getAmountPaid());
+			bookRepo.save(Booking); 
+			return "index";	
 		}
-		
-		// Creating New Booking Object
-		Booking newBooking = new Booking(movieName, loginCust.getCustId(), Integer.parseInt(tickAdult), Integer.parseInt(tickSenStu), Integer.parseInt(tickChild), new Date(), viewDate, venue);
-		
-		// Saving to Repo
-		bookRepo.save(newBooking);
-		
-		// TO CHANGE -> Returning to Index
-		MVpostNewBooking = new ModelAndView("index");
-		
-		return MVpostNewBooking;
 	}
-	
-	
-	@GetMapping("/view-booking/{id}")
-	public ModelAndView get_viewBooking(@PathVariable("id") int bookId) {
-		ModelAndView MVgetViewBooking = new ModelAndView("view-booking");
 
+	@GetMapping("/view-booking/{id}")
+	public String get_viewBooking(@PathVariable("id") int bookId, Model model) {
 		try {
 			Booking bking =  bookRepo.getOne(bookId);		
 			Customer cust = custRepo.getOne(bking.getCustId());
-			MVgetViewBooking.addObject("booking", bking);
-			MVgetViewBooking.addObject("custName", cust.getCustName());
+			model.addAttribute("booking", bking);
+			model.addAttribute("custName", cust.getCustName());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			MVgetViewBooking = new ModelAndView("index");
+			return "index";
 		}
-
+		return "view-booking";
+	}
 		
-		return MVgetViewBooking;
+	@GetMapping("/update-booking/{id}")
+	public String get_updateBooking(@PathVariable("id") int bookId, Model model) {
+		try {
+			Booking bking =  bookRepo.getOne(bookId);
+			model.addAttribute("Booking", bking);
+			model.addAttribute("movieList", movieRepo.getAllMovieNames());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return "index";
+		}
+		return "update-booking";
+	}
+
+	@PostMapping("/update-booking/{id}")
+	public String post_updateBooking(@PathVariable("id") int bookId, @Valid @ModelAttribute Booking booking, BindingResult result, Model model) {
+		if(result.hasErrors()) {
+			return get_updateBooking(booking.getBookingId(), model);
+		}
+		booking.setAmountPaid(booking.getAmountPaid());
+		bookRepo.save(booking);
+		
+		return get_viewBooking(booking.getBookingId(), model);
 	}
 	
-	
-	@GetMapping("/update-booking/{id}")
-	public ModelAndView get_updateBooking(@PathVariable("id") int bookId) {
-		ModelAndView MVgetUpdateBooking = new ModelAndView("update-booking");
-	
+	@GetMapping("/delete-booking/{id}")
+	public String get_deleteBooking(@PathVariable("id") int bookId, Model model) {
 		try {
 			Booking bking =  bookRepo.getOne(bookId);		
-			MVgetUpdateBooking.addObject("upBook", bking);
-			MVgetUpdateBooking.addObject("movieList", movieRepo.getAllMovieNames());
+			Customer cust = custRepo.getOne(bking.getCustId());
+			model.addAttribute("booking", bking);
+			model.addAttribute("custName", cust.getCustName());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			MVgetUpdateBooking = new ModelAndView("index");
+			return "index";
 		}
-	
-		return MVgetUpdateBooking;
+		return "delete-booking";
 	}
-	
-	@PostMapping("/update-booking")
-	public ModelAndView post_updateBooking(@RequestParam("bookId") String bookId,@RequestParam("movieName") String movieName, 
-										@RequestParam("tickAdult") String tickAdult, @RequestParam("tickSenStu") String tickSenStu,
-										@RequestParam("tickChild") String tickChild, @RequestParam("viewingDate") String viewingDateStr, 
-										@RequestParam("venue") String venue) {
-		ModelAndView MVpostUpdateBooking = new ModelAndView("index");
-	
-		try {
-			Booking bking =  bookRepo.getOne(Integer.parseInt(bookId));
-			bking.setMovieName(movieName);
-			bking.setTickAdult(Integer.parseInt(tickAdult));
-			bking.setTickSenStu(Integer.parseInt(tickSenStu));
-			bking.setTickChild(Integer.parseInt(tickChild));
-			
-			String dateMask = "yyyy-MM-dd";
-			Date viewDate = new Date();
-			try {
-				viewDate = new SimpleDateFormat(dateMask).parse(viewingDateStr);
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			bking.setViewingDate(viewDate);
-			bking.setVenue(venue);
-			
-			bookRepo.save(bking);
-			
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			MVpostUpdateBooking = new ModelAndView("index");
-		}
-	
-		return MVpostUpdateBooking;
-	}
-	
-	
-	private void updateLoginCust(HttpServletRequest request) {
-		session=request.getSession();
-		loginCust= (Customer) session.getAttribute("loginCust");
-		if(loginCust==null){System.out.println("NO Login Customer Found");}
-		else {System.out.println(loginCust.getUsername());}
+
+	@PostMapping("/delete-booking/{id}")
+	public String post_deleteBooking(@PathVariable("id") int bookId) {
+		bookRepo.deleteById(bookId);
+		return "/index";
 	}
 }
