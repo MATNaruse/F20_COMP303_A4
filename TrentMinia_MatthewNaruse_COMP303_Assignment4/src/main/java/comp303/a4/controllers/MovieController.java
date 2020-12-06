@@ -10,9 +10,11 @@ package comp303.a4.controllers;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -128,11 +130,14 @@ public class MovieController {
 	private void processPosterUpload(MultipartFile poster, Movie movie) {
 		if(!poster.isEmpty()) {
 			try {
-				byte[] bytes = poster.getBytes();
+				System.out.println(poster.getContentType());
 				String cwd = new File(".").getCanonicalPath();
-				String imgName = movie.getMovieName().toLowerCase().replace(" ", "").replace(":", "-").replace("*", "");
-				Path toImages = Paths.get(cwd + "\\src\\main\\resources\\static\\images\\" + imgName + ".jpg");
-				Files.write(toImages, bytes);
+				String imgName = movie.getMovieName().toLowerCase().replace(" ", "").replace(":", "-").replace("*", "") + ".jpg";
+				Path toImages = Paths.get(cwd + "\\src\\main\\resources\\static\\images\\" + imgName);
+				InputStream posterInStr = poster.getInputStream();
+				Files.copy(posterInStr, toImages, StandardCopyOption.REPLACE_EXISTING);
+				
+				movie.setImgSrc("images/" + imgName);
 			
 				
 			} catch (Exception e) {
