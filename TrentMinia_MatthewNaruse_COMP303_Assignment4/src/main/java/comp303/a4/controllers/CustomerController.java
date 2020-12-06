@@ -44,7 +44,7 @@ public class CustomerController {
 	}
 	
 	@PostMapping("/register")
-	public String registerNewCustomer(@Valid @ModelAttribute Customer customer, BindingResult result, Model model, HttpServletRequest request) {
+	public String post_register(@Valid @ModelAttribute Customer customer, BindingResult result, Model model, HttpServletRequest request) {
 		if(result.hasErrors()) {return get_register(model);}
 		else {
 			custRepo.save(customer);
@@ -52,25 +52,14 @@ public class CustomerController {
 		}
 	}
 	
-//	@PostMapping("/register")
-//	public ModelAndView registerNewCustomer(@Valid @ModelAttribute Customer customer, BindingResult result, Model model, HttpServletRequest request) {
-//		Customer customer = new Customer(user, pass, custName, address, city, email, phone);
-//		custRepo.save(customer);
-//		// Set customer as the "logged in customer"
-//		session = request.getSession();
-//		session.setAttribute("loginCust", customer);
-//		session.setAttribute("loginCustId", customer.getCustId());
-//		updateLoginCust(request);
-//		return new ModelAndView("index");
-//	}
 	
 	@GetMapping("/login")
-	public String get_Login() {
+	public String get_login(Model model) {
 		return "login";
 	}
 	
 	@PostMapping("/login")
-	public ModelAndView post_Login(@RequestParam("Username") String user, @RequestParam("Password") String pass, HttpServletRequest request) {
+	public ModelAndView post_login(@RequestParam("Username") String user, @RequestParam("Password") String pass, HttpServletRequest request) {
 		ModelAndView MVpostLogin = null;
 		
 		// Check if Username and Passwords match
@@ -112,27 +101,45 @@ public class CustomerController {
 		loginCust = null;
 		return "index";
 	}
-	
+
 	@GetMapping("/profile")
-	public ModelAndView get_profile(HttpServletRequest request) {
-		ModelAndView MVgetProfile;
+	public String get_profile(Model model, HttpServletRequest request) {
 		// checking login customer
 		updateLoginCust(request);
 		
 		if(loginCust==null) {
 			// if no customer logged in, send to Login Page
-			MVgetProfile = new ModelAndView("login");
-			MVgetProfile.addObject("err_msg", "Please Log In First");
+			model.addAttribute("err_msg", "Please log in first");
+			return get_login(model);
 		}
 		
 		else {
 			// Pass logged in customer to Profile
-			MVgetProfile = new ModelAndView("profile");
-			MVgetProfile.addObject("loginCust", loginCust);
+			model.addAttribute("loginCust", loginCust);
+			return "profile";
 		}
-		
-		return MVgetProfile;
 	}
+	
+//	@GetMapping("/profile")
+//	public ModelAndView get_profile(HttpServletRequest request) {
+//		ModelAndView MVgetProfile;
+//		// checking login customer
+//		updateLoginCust(request);
+//		
+//		if(loginCust==null) {
+//			// if no customer logged in, send to Login Page
+//			MVgetProfile = new ModelAndView("login");
+//			MVgetProfile.addObject("err_msg", "Please Log In First");
+//		}
+//		
+//		else {
+//			// Pass logged in customer to Profile
+//			MVgetProfile = new ModelAndView("profile");
+//			MVgetProfile.addObject("loginCust", loginCust);
+//		}
+//		
+//		return MVgetProfile;
+//	}
 	
 	
 	public static ModelAndView EnsureLoggedIn(String successPage, HttpServletRequest request) {
