@@ -13,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 @Entity
@@ -28,9 +29,11 @@ public class Customer {
 	@NotBlank(message="Must have a Password")
 	private String Password;
 	
+	@NotBlank(message="Must have Customer Name")
 	private String custName;
 	private String address;
 	private String city;
+	@Email
 	private String email;
 	private String phoneNumber;
 	

@@ -11,7 +11,9 @@
 	<body class="container">
 		<div th:replace="fragment :: navbar"></div>
 		<h1>Book Today!</h1>
-		
+			<div th:if="${err_msg != null}">
+				<h5 class="text-center alert alert-danger" th:text="${err_msg}"/>
+			</div>
 			<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
 				<ol class="carousel-indicators">
 				  <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>

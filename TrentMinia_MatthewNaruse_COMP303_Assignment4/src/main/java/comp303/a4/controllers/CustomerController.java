@@ -12,14 +12,20 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import comp303.a4.entities.Booking;
 import comp303.a4.entities.Customer;
 import comp303.a4.repositories.CustomerRepo;
 
@@ -34,31 +40,30 @@ public class CustomerController {
 	public static Customer loginCust;
 	
 	@GetMapping("/register")
-	public String newRegisterForm() {
+	public String get_register(Model model) {
+		model.addAttribute("Cust", new Customer());
 		return "register";
 	}
 	
 	@PostMapping("/register")
-	public ModelAndView registerNewCustomer(@RequestParam("Username") String user, @RequestParam("Password") String pass, @RequestParam("custName") String custName,
-											@RequestParam("address") String address, @RequestParam("city") String city, @RequestParam("email") String email,
-											@RequestParam("phoneNumber") String phone, HttpServletRequest request) {
-		Customer customer = new Customer(user, pass, custName, address, city, email, phone);
-		custRepo.save(customer);
-		// Set customer as the "logged in customer"
-		session = request.getSession();
-		session.setAttribute("loginCust", customer);
-		session.setAttribute("loginCustId", customer.getCustId());
-		updateLoginCust(request);
-		return new ModelAndView("index");
+	public String post_register(@Valid @ModelAttribute Customer customer, BindingResult result, Model model, HttpServletRequest request) {
+		if(result.hasErrors()) {return get_register(model);}
+		else {
+			custRepo.save(customer);
+			session = request.getSession();
+			session.setAttribute("loginCust", customer);
+			return "index";
+		}
 	}
 	
+	
 	@GetMapping("/login")
-	public String get_Login() {
+	public String get_login(Model model) {
 		return "login";
 	}
 	
 	@PostMapping("/login")
-	public ModelAndView post_Login(@RequestParam("Username") String user, @RequestParam("Password") String pass, HttpServletRequest request) {
+	public ModelAndView post_login(@RequestParam("Username") String user, @RequestParam("Password") String pass, HttpServletRequest request) {
 		ModelAndView MVpostLogin = null;
 		
 		// Check if Username and Passwords match
@@ -100,29 +105,104 @@ public class CustomerController {
 		loginCust = null;
 		return "index";
 	}
-	
+
 	@GetMapping("/profile")
-	public ModelAndView get_profile(HttpServletRequest request) {
-		ModelAndView MVgetProfile;
+	public String get_profile(Model model, HttpServletRequest request) {
 		// checking login customer
 		updateLoginCust(request);
 		
 		if(loginCust==null) {
 			// if no customer logged in, send to Login Page
-			MVgetProfile = new ModelAndView("login");
-			MVgetProfile.addObject("err_msg", "Please Log In First");
+			model.addAttribute("err_msg", "Please log in first");
+			return get_login(model);
 		}
 		
 		else {
 			// Pass logged in customer to Profile
-			MVgetProfile = new ModelAndView("profile");
-			MVgetProfile.addObject("loginCust", loginCust);
+			model.addAttribute("loginCust", loginCust);
+			return "profile";
+		}
+	}
+
+	
+	@GetMapping("/update-profile/{id}")
+	public String get_updateProfile(@PathVariable("id") int custId, Model model, HttpServletRequest request) {
+		// checking login customer
+		updateLoginCust(request);
+		
+		if(loginCust==null) {
+			// if no customer logged in, send to Login Page
+			model.addAttribute("err_msg", "Please log in first");
+			return get_login(model);
 		}
 		
-		return MVgetProfile;
+		else if (loginCust.getCustId() != custId) {
+			// If trying to edit another profile 
+			model.addAttribute("err_msg", "You do not have permission to edit that profile!");
+			return "redirect:/index";
+		}
+		
+		else {
+			// If trying to edit own Profile
+			Customer cust = custRepo.getOne(custId);
+			model.addAttribute("upCust", cust);
+			return "update-profile";
+		}
 	}
 	
 	
+	@PostMapping("/update-profile/{id}")
+	public String post_updateProfile(@PathVariable("id") int custId, @Valid @ModelAttribute Customer customer, BindingResult result, Model model, HttpServletRequest request) {
+		if(result.hasErrors()) {
+			model.addAttribute("upCust", customer);
+			return get_updateProfile(custId, model, request);
+		}
+		
+		else {
+			custRepo.save(customer);
+			updateLoginCust(request);
+			session.setAttribute("loginCust", customer);
+			model.addAttribute("loginCust", customer);
+			return "redirect:/" + get_profile(model, request);
+		}
+	}
+	
+	@GetMapping("/delete-profile/{id}")
+	public String get_deleteProfile(@PathVariable("id") int custId, Model model, HttpServletRequest request) {
+		updateLoginCust(request);
+		
+		if(loginCust==null) {
+			// if no customer logged in, send to Login Page
+			model.addAttribute("err_msg", "Please log in first");
+			return get_login(model);
+		}
+		
+		else if (loginCust.getCustId() != custId) {
+			// If trying to delete another profile 
+			model.addAttribute("err_msg", "You do not have permission to edit that profile!");
+			return "redirect:/index";
+		}
+		else {
+			// If trying to delete own profile
+			Customer cust = custRepo.getOne(loginCust.getCustId());
+			model.addAttribute("delCust", cust);
+			return "delete-profile";
+		}
+	}
+	
+	@PostMapping("/delete-profile/{id}")
+	public String post_deleteProfile(@PathVariable("id") int custId, HttpServletRequest request, Model model) {
+		custRepo.deleteById(custId);
+		session = request.getSession();
+		session.setAttribute("loginCust", null);
+		model.addAttribute("err_msg", "Profile Deleted");
+		return "redirect:/index";
+		
+	}
+	//
+	// ==================================================================
+	//
+		
 	public static ModelAndView EnsureLoggedIn(String successPage, HttpServletRequest request) {
 		ModelAndView MVensureLogin;
 		HttpSession sess = request.getSession();
