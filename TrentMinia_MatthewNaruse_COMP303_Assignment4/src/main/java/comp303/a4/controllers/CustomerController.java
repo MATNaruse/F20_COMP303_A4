@@ -12,10 +12,14 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -34,23 +38,31 @@ public class CustomerController {
 	public static Customer loginCust;
 	
 	@GetMapping("/register")
-	public String newRegisterForm() {
+	public String get_register(Model model) {
+		model.addAttribute("Cust", new Customer());
 		return "register";
 	}
 	
 	@PostMapping("/register")
-	public ModelAndView registerNewCustomer(@RequestParam("Username") String user, @RequestParam("Password") String pass, @RequestParam("custName") String custName,
-											@RequestParam("address") String address, @RequestParam("city") String city, @RequestParam("email") String email,
-											@RequestParam("phoneNumber") String phone, HttpServletRequest request) {
-		Customer customer = new Customer(user, pass, custName, address, city, email, phone);
-		custRepo.save(customer);
-		// Set customer as the "logged in customer"
-		session = request.getSession();
-		session.setAttribute("loginCust", customer);
-		session.setAttribute("loginCustId", customer.getCustId());
-		updateLoginCust(request);
-		return new ModelAndView("index");
+	public String registerNewCustomer(@Valid @ModelAttribute Customer customer, BindingResult result, Model model, HttpServletRequest request) {
+		if(result.hasErrors()) {return get_register(model);}
+		else {
+			custRepo.save(customer);
+			return "index";
+		}
 	}
+	
+//	@PostMapping("/register")
+//	public ModelAndView registerNewCustomer(@Valid @ModelAttribute Customer customer, BindingResult result, Model model, HttpServletRequest request) {
+//		Customer customer = new Customer(user, pass, custName, address, city, email, phone);
+//		custRepo.save(customer);
+//		// Set customer as the "logged in customer"
+//		session = request.getSession();
+//		session.setAttribute("loginCust", customer);
+//		session.setAttribute("loginCustId", customer.getCustId());
+//		updateLoginCust(request);
+//		return new ModelAndView("index");
+//	}
 	
 	@GetMapping("/login")
 	public String get_Login() {
