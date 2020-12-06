@@ -2,3 +2,18 @@
     max-height: 150px; 
     width: auto;
 }
+
+
+/* Overrides for Bootstrap Carousel */
+/* -------------------------------- */
+
+.carousel-item {
+    width: 100%;
+    height: 600px;
+  }
+  
+.carousel-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
