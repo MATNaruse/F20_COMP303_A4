@@ -35,6 +35,17 @@ public class MovieController {
 	@Autowired
 	MovieRepo movieRepo;
 
+	/* 
+		Mapping for CRUD Operations:
+	    ----------------------------
+
+	   	Create: /admin/new-movie
+	   	Read: /view-movies
+	   	Update: /admin/update-movie/id
+	   	Delete: /admin/delete-movie/id
+
+	*/
+
 	@GetMapping("/view-movies")
 	public ModelAndView allMovies() {
 		ModelAndView MVAllMovies = new ModelAndView("view-movies");
@@ -56,6 +67,8 @@ public class MovieController {
 
 	@PostMapping("/admin/add")
 	public String addMovie(Movie movie, BindingResult result, Model model) {
+		if (result.hasErrors()) return "/admin/new-movie";
+
 		movieRepo.save(movie);
 		model.addAttribute("movies", movieRepo.findAll());
 		return ("redirect:/view-movies");
@@ -84,6 +97,8 @@ public class MovieController {
 	}
 
 	// Deleting A Movie
+	// ----------------
+	
 	@GetMapping("admin/delete-movie/{id}")
 	public String get_deleteMovie(@PathVariable("id") int movieId, Model model) {
 		Movie mov = movieRepo.findById(movieId)
