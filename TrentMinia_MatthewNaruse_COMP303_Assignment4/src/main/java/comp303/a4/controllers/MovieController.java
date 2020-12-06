@@ -20,11 +20,31 @@ import comp303.a4.entities.Movie;
 import comp303.a4.SeedData;
 import comp303.a4.repositories.MovieRepo;
 
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
 @Controller
 public class MovieController {
 	
 	@Autowired
 	MovieRepo movieRepo;
+
+	/* 
+		Mapping for CRUD Operations:
+	    ----------------------------
+
+	   	Create: /admin/new-movie
+	   	Read: /view-movies
+	   	Update: /admin/update-movie/id
+	   	Delete: /admin/delete-movie/id
+
+	*/
 
 	@GetMapping("/view-movies")
 	public ModelAndView allMovies() {
@@ -37,9 +57,61 @@ public class MovieController {
 		return MVAllMovies;
 	}
 	
+	// Adding New Movie
+	// ----------------
+
 	@GetMapping("/admin/new-movie")
-	public String getNewMovie() {
+	public String getNewMovie(Movie movie) {
 		return "new-movie";
+	}
+
+	@PostMapping("/admin/add")
+	public String addMovie(Movie movie, BindingResult result, Model model) {
+		if (result.hasErrors()) return "/admin/new-movie";
+
+		movieRepo.save(movie);
+		model.addAttribute("movies", movieRepo.findAll());
+		return ("redirect:/view-movies");
+	}
+
+	// Updating A Movie
+	// ----------------
+	@GetMapping("/admin/update-movie/{id}")
+	public String get_updateMovie(@PathVariable("id") int movieId, Model model) {
+		Movie mov = movieRepo.findById(movieId)
+		.orElseThrow(() -> new IllegalArgumentException("Invalid movie number: " + movieId));
+
+		model.addAttribute("upMovie", mov);
+	
+		return ("update-movie");
+	}
+	
+	@PostMapping("/update-movie/{id}")
+	public String post_updateMovie(@PathVariable("id") int movieId, @ModelAttribute Movie movie, BindingResult result, Model model) {
+		if(result.hasErrors()) {
+			return get_updateMovie(movie.getMovieId(), model);
+		}
+		
+		movieRepo.save(movie);
+		return ("redirect:/view-movies");
+	}
+
+	// Deleting A Movie
+	// ----------------
+	
+	@GetMapping("admin/delete-movie/{id}")
+	public String get_deleteMovie(@PathVariable("id") int movieId, Model model) {
+		Movie mov = movieRepo.findById(movieId)
+		.orElseThrow(() -> new IllegalArgumentException("Invalid movie number: " + movieId));
+
+		model.addAttribute("delMovie", mov);
+		return "delete-movie";
+	}
+
+	@PostMapping("/delete-movie/{id}")
+	public String post_deleteMovie(@PathVariable("id") int movieId) {
+		movieRepo.deleteById(movieId);
+		return "redirect:/view-movies";
 	}
 	
 }
