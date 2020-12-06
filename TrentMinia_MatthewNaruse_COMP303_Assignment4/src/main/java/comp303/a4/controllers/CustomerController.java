@@ -20,10 +20,12 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import comp303.a4.entities.Booking;
 import comp303.a4.entities.Customer;
 import comp303.a4.repositories.CustomerRepo;
 
@@ -119,29 +121,56 @@ public class CustomerController {
 			return "profile";
 		}
 	}
+
 	
-//	@GetMapping("/profile")
-//	public ModelAndView get_profile(HttpServletRequest request) {
-//		ModelAndView MVgetProfile;
-//		// checking login customer
-//		updateLoginCust(request);
-//		
-//		if(loginCust==null) {
-//			// if no customer logged in, send to Login Page
-//			MVgetProfile = new ModelAndView("login");
-//			MVgetProfile.addObject("err_msg", "Please Log In First");
-//		}
-//		
-//		else {
-//			// Pass logged in customer to Profile
-//			MVgetProfile = new ModelAndView("profile");
-//			MVgetProfile.addObject("loginCust", loginCust);
-//		}
-//		
-//		return MVgetProfile;
-//	}
+	@GetMapping("/update-profile/{id}")
+	public String get_updateProfile(@PathVariable("id") int custId, Model model, HttpServletRequest request) {
+		// checking login customer
+		updateLoginCust(request);
+		
+		if(loginCust==null) {
+			// if no customer logged in, send to Login Page
+			model.addAttribute("err_msg", "Please log in first");
+			return get_login(model);
+		}
+		
+		else if (loginCust.getCustId() != custId) {
+			// If trying to edit another profile 
+			model.addAttribute("err_msg", "You do not have permission to edit that profile!");
+			return "index";
+		}
+		
+		else {
+			// If trying to edit own Profile
+			Customer cust = custRepo.getOne(custId);
+			model.addAttribute("upCust", cust);
+			return "update-profile";
+		}
+	}
 	
 	
+	@PostMapping("/update-profile/{id}")
+	public String post_updateProfile(@PathVariable("id") int custId, @Valid @ModelAttribute Customer customer, BindingResult result, Model model, HttpServletRequest request) {
+		if(result.hasErrors()) {
+			model.addAttribute("upCust", customer);
+			return get_updateProfile(custId, model, request);
+		}
+		
+		else {
+			custRepo.save(customer);
+			updateLoginCust(request);
+			session.setAttribute("loginCust", customer);
+			model.addAttribute("loginCust", customer);
+			return get_profile(model, request);
+		}
+	}
+	
+	
+	
+	//
+	// ==================================================================
+	//
+		
 	public static ModelAndView EnsureLoggedIn(String successPage, HttpServletRequest request) {
 		ModelAndView MVensureLogin;
 		HttpSession sess = request.getSession();
