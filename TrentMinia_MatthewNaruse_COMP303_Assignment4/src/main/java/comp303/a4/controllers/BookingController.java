@@ -61,13 +61,21 @@ public class BookingController {
 
 	@GetMapping("/new-booking")
 	public String get_newBooking(Model model, HttpServletRequest request){
-		System.out.println("GET_NEWBOOKING");
-		Booking newbook = new Booking(CustomerController.loginCust.getCustId());
-		newbook.setPurchaseDate(new Date());
-		System.out.println("CUSTID" + newbook.getCustId());
-		model.addAttribute("Booking", newbook);
-		model.addAttribute("movieList", movieRepo.getAllMovieNames());
-		return "new-booking";
+		Customer loginCust = CustomerController.getLoginCust(request);
+		if(loginCust == null) {
+			model.addAttribute("err_msg", "Please log in first");
+			return "login";
+		}
+		else {
+			System.out.println("GET_NEWBOOKING");
+			Booking newbook = new Booking(CustomerController.loginCust.getCustId());
+			newbook.setPurchaseDate(new Date());
+			System.out.println("CUSTID" + newbook.getCustId());
+			model.addAttribute("Booking", newbook);
+			model.addAttribute("movieList", movieRepo.getAllMovieNames());
+			return "new-booking";
+		}
+
 	}
 	
 	@PostMapping("/new-booking")
@@ -83,58 +91,82 @@ public class BookingController {
 	}
 
 	@GetMapping("/view-booking/{id}")
-	public String get_viewBooking(@PathVariable("id") int bookId, Model model) {
-		try {
-			Booking bking =  bookRepo.getOne(bookId);		
-			Customer cust = custRepo.getOne(bking.getCustId());
-			model.addAttribute("booking", bking);
-			model.addAttribute("custName", cust.getCustName());
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return "index";
+	public String get_viewBooking(@PathVariable("id") int bookId, Model model, HttpServletRequest request) {
+		Customer loginCust = CustomerController.getLoginCust(request);
+		if(loginCust == null) {
+			model.addAttribute("err_msg", "Please log in first");
+			return "login";
 		}
-		return "view-booking";
+		else {
+			try {
+				Booking bking =  bookRepo.getOne(bookId);		
+				Customer cust = custRepo.getOne(bking.getCustId());
+				model.addAttribute("booking", bking);
+				model.addAttribute("custName", cust.getCustName());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return "index";
+			}
+			return "view-booking";
+		}
+
 	}
 		
 	@GetMapping("/update-booking/{id}")
-	public String get_updateBooking(@PathVariable("id") int bookId, Model model) {
-		try {
-			Booking bking =  bookRepo.getOne(bookId);
-			model.addAttribute("Booking", bking);
-			model.addAttribute("movieList", movieRepo.getAllMovieNames());
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return "index";
+	public String get_updateBooking(@PathVariable("id") int bookId, Model model, HttpServletRequest request) {
+		Customer loginCust = CustomerController.getLoginCust(request);
+		if(loginCust == null) {
+			model.addAttribute("err_msg", "Please log in first");
+			return "login";
 		}
-		return "update-booking";
+		else {
+			try {
+				Booking bking =  bookRepo.getOne(bookId);
+				model.addAttribute("Booking", bking);
+				model.addAttribute("movieList", movieRepo.getAllMovieNames());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return "index";
+			}
+			return "update-booking";
+		}
+		
 	}
 
 	@PostMapping("/update-booking/{id}")
-	public String post_updateBooking(@PathVariable("id") int bookId, @Valid @ModelAttribute Booking booking, BindingResult result, Model model) {
+	public String post_updateBooking(@PathVariable("id") int bookId, @Valid @ModelAttribute Booking booking, BindingResult result, Model model, HttpServletRequest request) {
 		if(result.hasErrors()) {
-			return get_updateBooking(booking.getBookingId(), model);
+			return get_updateBooking(booking.getBookingId(), model, request);
 		}
 		booking.setAmountPaid(booking.getAmountPaid());
 		bookRepo.save(booking);
 		
-		return "redirect:/" + get_viewBooking(booking.getBookingId(), model) + "/" + bookId;
+		return "redirect:/" + get_viewBooking(booking.getBookingId(), model, request) + "/" + bookId;
 	}
 	
 	@GetMapping("/delete-booking/{id}")
-	public String get_deleteBooking(@PathVariable("id") int bookId, Model model) {
-		try {
-			Booking bking =  bookRepo.getOne(bookId);		
-			Customer cust = custRepo.getOne(bking.getCustId());
-			model.addAttribute("booking", bking);
-			model.addAttribute("custName", cust.getCustName());
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return "index";
+	public String get_deleteBooking(@PathVariable("id") int bookId, Model model, HttpServletRequest request) {
+		Customer loginCust = CustomerController.getLoginCust(request);
+		if(loginCust == null) {
+			model.addAttribute("err_msg", "Please log in first");
+			return "login";
 		}
-		return "delete-booking";
+		else {
+			try {
+				Booking bking =  bookRepo.getOne(bookId);		
+				Customer cust = custRepo.getOne(bking.getCustId());
+				model.addAttribute("booking", bking);
+				model.addAttribute("custName", cust.getCustName());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return "index";
+			}
+			return "delete-booking";			
+		}
+
 	}
 
 	@PostMapping("/delete-booking/{id}")
