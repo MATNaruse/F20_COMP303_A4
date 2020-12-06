@@ -12,7 +12,7 @@
 		<div th:replace="fragment :: navbar"></div>		
 		<h1>New Movie</h1>
 
-		<form action="#" th:action="@{/add}" th:object="${movie}" method="post">
+		<form action="#" th:action="@{/admin/add}" th:object="${movie}" method="post">
 			<table class="table">
 				<tr>
 					<th><label for="movieName">Movie Name</label></th>

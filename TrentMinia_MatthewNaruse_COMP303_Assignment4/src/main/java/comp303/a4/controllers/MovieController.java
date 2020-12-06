@@ -54,11 +54,11 @@ public class MovieController {
 		return "new-movie";
 	}
 
-	@PostMapping("/add")
+	@PostMapping("/admin/add")
 	public String addMovie(Movie movie, BindingResult result, Model model) {
 		movieRepo.save(movie);
 		model.addAttribute("movies", movieRepo.findAll());
-		return ("index");
+		return ("redirect:/view-movies");
 	}
 
 	// Updating A Movie
@@ -80,7 +80,7 @@ public class MovieController {
 		}
 		
 		movieRepo.save(movie);
-		return ("index");
+		return ("redirect:/view-movies");
 	}
 
 	// Deleting A Movie
@@ -96,7 +96,7 @@ public class MovieController {
 	@PostMapping("/delete-movie/{id}")
 	public String post_deleteMovie(@PathVariable("id") int movieId) {
 		movieRepo.deleteById(movieId);
-		return "index";
+		return "redirect:/view-movies";
 	}
 	
 }
