@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.NotBlank;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 @Entity
 public class Booking {
 	/* 
@@ -28,8 +30,12 @@ public class Booking {
 	private int tickSenStu;
 	private int tickChild;
 	private double amountPaid;
+	
+	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date purchaseDate;
+	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date viewingDate;
+	
 	private String venue;
 	
 	public int getBookingId() {

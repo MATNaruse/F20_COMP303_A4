@@ -10,6 +10,7 @@ public class SeedData {
 		
     public static void loadMovieData(MovieRepo movieRepo) {
     	if(movieRepo.count() == 0) {
+    		System.out.println("SeedData:loadMovieData: EMPTY MOVIE REPO -> FILLING!!");
     		List<Movie> list = new ArrayList<Movie>();
             list.add(new Movie(
                 "Tenet",

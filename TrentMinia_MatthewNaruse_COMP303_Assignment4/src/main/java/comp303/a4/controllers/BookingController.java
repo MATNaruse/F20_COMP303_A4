@@ -15,10 +15,14 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -43,48 +47,75 @@ public class BookingController {
 	CustomerRepo custRepo;
 	
 	private static HttpSession session;
-	private static Customer loginCust;
 	
+//	@GetMapping("/new-booking")
+//	public ModelAndView get_newBooking(HttpServletRequest request){
+//		ModelAndView MVgetNewBooking;
+//		updateLoginCust(request);
+//		MVgetNewBooking = CustomerController.EnsureLoggedIn("new-booking", request);
+//		List<String> movieList = movieRepo.getAllMovieNames();
+//		MVgetNewBooking.addObject("movieList", movieList);
+//		return MVgetNewBooking;
+//	}
+
 	@GetMapping("/new-booking")
-	public ModelAndView get_newBooking(HttpServletRequest request){
-		ModelAndView MVgetNewBooking;
-		updateLoginCust(request);
-		MVgetNewBooking = CustomerController.EnsureLoggedIn("new-booking", request);
-		List<String> movieList = movieRepo.getAllMovieNames();
-		MVgetNewBooking.addObject("movieList", movieList);
-		return MVgetNewBooking;
+	public String get_newBooking(Model model, HttpServletRequest request){
+		System.out.println("GET_NEWBOOKING");
+		Booking newbook = new Booking();
+		newbook.setCustId(CustomerController.loginCust.getCustId());
+		model.addAttribute("Booking", newbook);
+		model.addAttribute("movieList", movieRepo.getAllMovieNames());
+//		int custId = CustomerController.loginCust.getCustId();
+//		System.out.println("PRELOGINCUSTID:" + custId);
+//		Customer cust = custRepo.getOne(custId);
+//		System.out.println("CUST_CUSTID" + cust.getCustId());
+//		model.addAttribute("loginCustId", custRepo.getOne(custId));
+//		
+		System.out.println("LOGINCUSTID:" + CustomerController.loginCust.getCustId());
+		return "new-booking";
 	}
 	
 	@PostMapping("/new-booking")
-	public ModelAndView post_newBooking(@RequestParam("movieName") String movieName, @RequestParam("ticketAdult") String tickAdult,
-										@RequestParam("ticketSenStu") String tickSenStu, @RequestParam("ticketChild") String tickChild,
-										@RequestParam("viewingDate") String viewingDateStr, @RequestParam("venue") String venue,
-										HttpServletRequest request) {
-		ModelAndView MVpostNewBooking;
-		// Ensure Current Login Customer
-		updateLoginCust(request);
-
-		// Parse viewingDate
-		String dateMask = "yyyy-MM-dd";
-		Date viewDate = new Date();
-		try {
-			viewDate = new SimpleDateFormat(dateMask).parse(viewingDateStr);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	public String post_newBooking(@Valid @ModelAttribute Booking Booking, BindingResult result, Model model, HttpServletRequest request) {
+		System.out.println(result.getAllErrors());
+		System.out.println("POST_NEWBOOKING");
+		if(result.hasErrors()) {return get_newBooking(model, request);}
+		else { 
+			bookRepo.save(Booking); 
+			return "index";	
 		}
-		
-		// Creating New Booking Object
-		Booking newBooking = new Booking(movieName, loginCust.getCustId(), Integer.parseInt(tickAdult), Integer.parseInt(tickSenStu), Integer.parseInt(tickChild), new Date(), viewDate, venue);
-		
-		// Saving to Repo
-		bookRepo.save(newBooking);
-		
-		// TO CHANGE -> Returning to Index
-		MVpostNewBooking = new ModelAndView("index");
-		
-		return MVpostNewBooking;
 	}
+	
+//	@PostMapping("/new-booking")
+//	public ModelAndView post_newBooking(@RequestParam("movieName") String movieName, @RequestParam("ticketAdult") String tickAdult,
+//										@RequestParam("ticketSenStu") String tickSenStu, @RequestParam("ticketChild") String tickChild,
+//										@RequestParam("viewingDate") String viewingDateStr, @RequestParam("venue") String venue,
+//										HttpServletRequest request) {
+//		ModelAndView MVpostNewBooking;
+//		// Ensure Current Login Customer
+//		updateLoginCust(request);
+//
+//		// Parse viewingDate
+//		String dateMask = "yyyy-MM-dd";
+//		Date viewDate = new Date();
+//		try {
+//			viewDate = new SimpleDateFormat(dateMask).parse(viewingDateStr);
+//		} catch (ParseException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		
+//		// Creating New Booking Object
+//		Booking newBooking = new Booking(movieName, loginCust.getCustId(), Integer.parseInt(tickAdult), Integer.parseInt(tickSenStu), Integer.parseInt(tickChild), new Date(), viewDate, venue);
+//		
+//		// Saving to Repo
+//		bookRepo.save(newBooking);
+//		
+//		// TO CHANGE -> Returning to Index
+//		MVpostNewBooking = new ModelAndView("index");
+//		
+//		return MVpostNewBooking;
+//	}
 	
 	
 	@GetMapping("/view-booking/{id}")
@@ -162,10 +193,10 @@ public class BookingController {
 	}
 	
 	
-	private void updateLoginCust(HttpServletRequest request) {
-		session=request.getSession();
-		loginCust= (Customer) session.getAttribute("loginCust");
-		if(loginCust==null){System.out.println("NO Login Customer Found");}
-		else {System.out.println(loginCust.getUsername());}
-	}
+//	private void updateLoginCust(HttpServletRequest request) {
+//		session=request.getSession();
+//		loginCust= (Customer) session.getAttribute("loginCust");
+//		if(loginCust==null){System.out.println("NO Login Customer Found");}
+//		else {System.out.println(loginCust.getUsername());}
+//	}
 }

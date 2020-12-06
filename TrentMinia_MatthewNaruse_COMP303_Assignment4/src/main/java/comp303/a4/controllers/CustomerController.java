@@ -31,7 +31,7 @@ public class CustomerController {
 	private CustomerRepo custRepo;
 	
 	private static HttpSession session;
-	private static Customer loginCust;
+	public static Customer loginCust;
 	
 	@GetMapping("/register")
 	public String newRegisterForm() {
@@ -47,6 +47,7 @@ public class CustomerController {
 		// Set customer as the "logged in customer"
 		session = request.getSession();
 		session.setAttribute("loginCust", customer);
+		session.setAttribute("loginCustId", customer.getCustId());
 		updateLoginCust(request);
 		return new ModelAndView("index");
 	}
@@ -83,6 +84,7 @@ public class CustomerController {
 			// Set customer as the "logged in customer"
 			session = request.getSession();
 			session.setAttribute("loginCust", loginCust);
+			session.setAttribute("loginCustId", loginCust.getCustId());
 			updateLoginCust(request);
 			// Return them to index
 			MVpostLogin = new ModelAndView("index");
@@ -145,5 +147,13 @@ public class CustomerController {
 		loginCust= (Customer) session.getAttribute("loginCust");
 		if(loginCust==null){System.out.println("NO Login Customer Found");}
 		else {System.out.println(loginCust.getUsername());}
+	}
+	
+	public static Customer getLoginCust(HttpServletRequest request) {
+		session=request.getSession();
+		loginCust= (Customer) session.getAttribute("loginCust");
+		if(loginCust==null){System.out.println("NO Login Customer Found");}
+		else {System.out.println(loginCust.getUsername());}
+		return loginCust;
 	}
 }
