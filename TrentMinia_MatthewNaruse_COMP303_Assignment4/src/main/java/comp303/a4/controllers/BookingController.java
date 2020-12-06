@@ -96,28 +96,7 @@ public class BookingController {
 		}
 		return "view-booking";
 	}
-	
-	
-//	@GetMapping("/view-booking/{id}")
-//	public ModelAndView get_viewBooking(@PathVariable("id") int bookId) {
-//		ModelAndView MVgetViewBooking = new ModelAndView("view-booking");
-//
-//		try {
-//			Booking bking =  bookRepo.getOne(bookId);		
-//			Customer cust = custRepo.getOne(bking.getCustId());
-//			MVgetViewBooking.addObject("booking", bking);
-//			MVgetViewBooking.addObject("custName", cust.getCustName());
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//			MVgetViewBooking = new ModelAndView("index");
-//		}
-//
-//		
-//		return MVgetViewBooking;
-//	}
-//	
-	
+		
 	@GetMapping("/update-booking/{id}")
 	public String get_updateBooking(@PathVariable("id") int bookId, Model model) {
 		try {
@@ -141,5 +120,26 @@ public class BookingController {
 		bookRepo.save(booking);
 		
 		return get_viewBooking(booking.getBookingId(), model);
+	}
+	
+	@GetMapping("/delete-booking/{id}")
+	public String get_deleteBooking(@PathVariable("id") int bookId, Model model) {
+		try {
+			Booking bking =  bookRepo.getOne(bookId);		
+			Customer cust = custRepo.getOne(bking.getCustId());
+			model.addAttribute("booking", bking);
+			model.addAttribute("custName", cust.getCustName());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return "index";
+		}
+		return "delete-booking";
+	}
+
+	@PostMapping("/delete-booking/{id}")
+	public String post_deleteBooking(@PathVariable("id") int bookId) {
+		bookRepo.deleteById(bookId);
+		return "/index";
 	}
 }
