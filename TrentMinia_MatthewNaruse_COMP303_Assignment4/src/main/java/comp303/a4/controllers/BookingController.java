@@ -130,60 +130,16 @@ public class BookingController {
 			return "index";
 		}
 		return "update-booking";
-//		try {
-//			Optional<Booking> bking =  bookRepo.findById(bookId);
-//			model.addAttribute("booking", bking);
-//			model.addAttribute("movieList", movieRepo.getAllMovieNames());
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//			return "index";
-//		}
-//		return "update-booking";
 	}
-//	
-//	@PostMapping("/update-booking")
-//	public ModelAndView post_updateBooking(@RequestParam("bookId") String bookId,@RequestParam("movieName") String movieName, 
-//										@RequestParam("tickAdult") String tickAdult, @RequestParam("tickSenStu") String tickSenStu,
-//										@RequestParam("tickChild") String tickChild, @RequestParam("viewingDate") String viewingDateStr, 
-//										@RequestParam("venue") String venue) {
-//		ModelAndView MVpostUpdateBooking = new ModelAndView("index");
-//	
-//		try {
-//			Booking bking =  bookRepo.getOne(Integer.parseInt(bookId));
-//			bking.setMovieName(movieName);
-//			bking.setTickAdult(Integer.parseInt(tickAdult));
-//			bking.setTickSenStu(Integer.parseInt(tickSenStu));
-//			bking.setTickChild(Integer.parseInt(tickChild));
-//			
-//			String dateMask = "yyyy-MM-dd";
-//			Date viewDate = new Date();
-//			try {
-//				viewDate = new SimpleDateFormat(dateMask).parse(viewingDateStr);
-//			} catch (ParseException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//			
-//			bking.setViewingDate(viewDate);
-//			bking.setVenue(venue);
-//			
-//			bookRepo.save(bking);
-//			
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//			MVpostUpdateBooking = new ModelAndView("index");
-//		}
-//	
-//		return MVpostUpdateBooking;
-//	}
-	
-	
-//	private void updateLoginCust(HttpServletRequest request) {
-//		session=request.getSession();
-//		loginCust= (Customer) session.getAttribute("loginCust");
-//		if(loginCust==null){System.out.println("NO Login Customer Found");}
-//		else {System.out.println(loginCust.getUsername());}
-//	}
+
+	@PostMapping("/update-booking/{id}")
+	public String post_updateBooking(@PathVariable("id") int bookId, @Valid @ModelAttribute Booking booking, BindingResult result, Model model) {
+		if(result.hasErrors()) {
+			return get_updateBooking(booking.getBookingId(), model);
+		}
+		booking.setAmountPaid(booking.getAmountPaid());
+		bookRepo.save(booking);
+		
+		return get_viewBooking(booking.getBookingId(), model);
+	}
 }
