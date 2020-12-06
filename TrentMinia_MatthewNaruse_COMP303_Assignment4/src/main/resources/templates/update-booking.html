@@ -11,6 +11,46 @@
 	<body class="container">
 		<div th:replace="fragment :: navbar"></div>		
 		<h1>Update Booking</h1>
+		<form action="/update-booking" method="POST">
+			<table class="table">
+				<tr>
+					<th><label for="movieName">Movie Name</label></th>
+					<td>
+						<select id="movieName" name="movieName">
+							<option th:each="movie: ${movieList}" th:selected="${upBook.movieName==movie}" th:value="${movie}" th:text="${movie}"></option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<th>Adults : $12.00</th>
+					<td><input type="number" id="tickAdult" name="tickAdult" th:value="${upBook.tickAdult}"/></td>
+
+					<th>Senior/Student: $8.00</th>
+					<td><input type="number" id="tickSenStu" name="tickSenStu" th:value="${upBook.tickSenStu}" /></td>
+
+					<th>Children : $6.50</th>
+					<td><input type="number" id="tickChild" name="tickChild" th:value="${upBook.tickChild}"/></td>
+				</tr>
+				<tr>
+					<th><label for="viewingDate">Viewing Date</label></th>
+					<td><input type="date" id="viewingDate" name="viewingDate" th:value="${upBook.viewingDate}"/></td>
+				</tr>
+				<tr>
+					<th><label for="venue">Venue</label></th>
+					<td>
+						<select id="venue" name="venue" th:selected="${upBook.movieName==movie}">
+							<option value="cinema1">Cinema 1</option>
+							<option value="cinema2">Cinema 2</option>
+							<option value="cinema3">Cinema 3</option>
+							<option value="cinema4">Cinema 4</option>
+							<option value="cinema5">Cinema 5</option>
+						</select>
+					</td>
+				</tr>
+			</table>
+			<input type="text" id="bookId" name="bookId" th:value="${upBook.bookingId}" readonly/>
+			<input type="submit"/>
+		</form>
 	</body>
 		<div th:include="fragment :: footer"></div>
 </html>

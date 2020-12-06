@@ -24,7 +24,9 @@ public class Booking {
 	private String movieName;
 
 	private int custId;
-	
+	private int tickAdult;
+	private int tickSenStu;
+	private int tickChild;
 	private double amountPaid;
 	private Date purchaseDate;
 	private Date viewingDate;
@@ -48,8 +50,27 @@ public class Booking {
 	public void setCustId(int custId) {
 		this.custId = custId;
 	}
+	public int getTickAdult() {
+		return tickAdult;
+	}
+	public void setTickAdult(int tickAdult) {
+		this.tickAdult = tickAdult;
+	}
+	public int getTickSenStu() {
+		return tickSenStu;
+	}
+	public void setTickSenStu(int tickSenStu) {
+		this.tickSenStu = tickSenStu;
+	}
+	public int getTickChild() {
+		return tickChild;
+	}
+	public void setTickChild(int tickChild) {
+		this.tickChild = tickChild;
+	}
 	public double getAmountPaid() {
-		return amountPaid;
+		//return amountPaid;
+		return  (tickAdult * 12) + (tickSenStu * 8) + (tickChild * 6.50);
 	}
 	public void setAmountPaid(double amountPaid) {
 		this.amountPaid = amountPaid;
@@ -75,10 +96,12 @@ public class Booking {
 	
 	public Booking() {};
 	
-	public Booking(String movieName, int custId, double amtPaid, Date purchDate, Date viewDate, String venue) {
+	public Booking(String movieName, int custId, int tAdult, int tSenStu, int tChild, Date purchDate, Date viewDate, String venue) {
 		this.movieName = movieName;
 		this.custId = custId;
-		this.amountPaid = amtPaid;
+		this.tickAdult = tAdult;
+		this.tickSenStu = tSenStu;
+		this.tickChild = tChild;
 		this.purchaseDate = purchDate;
 		this.viewingDate = viewDate;
 		this.venue = venue;

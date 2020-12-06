@@ -63,10 +63,7 @@ public class BookingController {
 		ModelAndView MVpostNewBooking;
 		// Ensure Current Login Customer
 		updateLoginCust(request);
-		
-		// Calc amount "paid" - Adult $12, Senior/Student $8, Child $6.50
-		double amtPaid = (Integer.parseInt(tickAdult) * 12) + (Integer.parseInt(tickSenStu) * 8) + (Integer.parseInt(tickChild) * 6.50);
-		
+
 		// Parse viewingDate
 		String dateMask = "yyyy-MM-dd";
 		Date viewDate = new Date();
@@ -78,7 +75,7 @@ public class BookingController {
 		}
 		
 		// Creating New Booking Object
-		Booking newBooking = new Booking(movieName, loginCust.getCustId(), amtPaid, new Date(), viewDate, venue);
+		Booking newBooking = new Booking(movieName, loginCust.getCustId(), Integer.parseInt(tickAdult), Integer.parseInt(tickSenStu), Integer.parseInt(tickChild), new Date(), viewDate, venue);
 		
 		// Saving to Repo
 		bookRepo.save(newBooking);
@@ -93,16 +90,77 @@ public class BookingController {
 	@GetMapping("/view-booking/{id}")
 	public ModelAndView get_viewBooking(@PathVariable("id") int bookId) {
 		ModelAndView MVgetViewBooking = new ModelAndView("view-booking");
-		
-		Booking bking =  bookRepo.getOne(bookId);
-		Customer cust = custRepo.getOne(bking.getCustId());
-		MVgetViewBooking.addObject("booking", bking);
-		MVgetViewBooking.addObject("custName", cust.getCustName());
+
+		try {
+			Booking bking =  bookRepo.getOne(bookId);		
+			Customer cust = custRepo.getOne(bking.getCustId());
+			MVgetViewBooking.addObject("booking", bking);
+			MVgetViewBooking.addObject("custName", cust.getCustName());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			MVgetViewBooking = new ModelAndView("index");
+		}
+
 		
 		return MVgetViewBooking;
-		
-		
 	}
+	
+	
+	@GetMapping("/update-booking/{id}")
+	public ModelAndView get_updateBooking(@PathVariable("id") int bookId) {
+		ModelAndView MVgetUpdateBooking = new ModelAndView("update-booking");
+	
+		try {
+			Booking bking =  bookRepo.getOne(bookId);		
+			MVgetUpdateBooking.addObject("upBook", bking);
+			MVgetUpdateBooking.addObject("movieList", movieRepo.getAllMovieNames());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			MVgetUpdateBooking = new ModelAndView("index");
+		}
+	
+		return MVgetUpdateBooking;
+	}
+	
+	@PostMapping("/update-booking")
+	public ModelAndView post_updateBooking(@RequestParam("bookId") String bookId,@RequestParam("movieName") String movieName, 
+										@RequestParam("tickAdult") String tickAdult, @RequestParam("tickSenStu") String tickSenStu,
+										@RequestParam("tickChild") String tickChild, @RequestParam("viewingDate") String viewingDateStr, 
+										@RequestParam("venue") String venue) {
+		ModelAndView MVpostUpdateBooking = new ModelAndView("index");
+	
+		try {
+			Booking bking =  bookRepo.getOne(Integer.parseInt(bookId));
+			bking.setMovieName(movieName);
+			bking.setTickAdult(Integer.parseInt(tickAdult));
+			bking.setTickSenStu(Integer.parseInt(tickSenStu));
+			bking.setTickChild(Integer.parseInt(tickChild));
+			
+			String dateMask = "yyyy-MM-dd";
+			Date viewDate = new Date();
+			try {
+				viewDate = new SimpleDateFormat(dateMask).parse(viewingDateStr);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			bking.setViewingDate(viewDate);
+			bking.setVenue(venue);
+			
+			bookRepo.save(bking);
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			MVpostUpdateBooking = new ModelAndView("index");
+		}
+	
+		return MVpostUpdateBooking;
+	}
+	
 	
 	private void updateLoginCust(HttpServletRequest request) {
 		session=request.getSession();

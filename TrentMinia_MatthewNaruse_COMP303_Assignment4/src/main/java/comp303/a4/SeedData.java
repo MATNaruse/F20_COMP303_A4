@@ -3,8 +3,6 @@ package comp303.a4;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import comp303.a4.entities.Movie;
 import comp303.a4.repositories.MovieRepo;
 
