@@ -10,52 +10,52 @@
 	<head th:include="fragment :: header"/>
 	<body class="container">
 		<div th:replace="fragment :: navbar"></div>		
-		<h1>Update Booking</h1>
-		<form action="#" th:action="@{/update-booking/{bookId}(bookId=${Booking.bookingId})}" th:object="${Booking}" method="POST">
-			<table class="table">
-				<tr>
-					<th><label for="bookingId"> Booking ID</label></th>
-					<td><input id="bookingId" th:field="*{bookingId}" th:value="${Booking.bookingId}" readonly/></td>
-				</tr>
-				
-				<tr>
-					<th><label for="movieName">Movie Name</label></th>
-					<td>
-						<select id="movieName" th:field="*{movieName}">
-							<option th:each="movie: ${movieList}" th:selected="${Booking.movieName==movie}" th:value="${movie}" th:text="${movie}"></option>
-						</select>
-					</td>
-				</tr>
-				<tr>
-					<th>Adults : $12.00</th>
-					<td><input type="number" id="tickAdult" th:field="*{tickAdult}" th:value="${Booking.tickAdult}"/></td>
+		<div class="card text-center m-3 p-2">
+			<h1 class="card-title">Update Booking</h1>
+			<form action="#" th:action="@{/update-booking/{bookId}(bookId=${Booking.bookingId})}" th:object="${Booking}" method="POST">
+				<table class="table">
+					<tr>
+						<th><label for="bookingId"> Booking ID</label></th>
+						<td><input id="bookingId" th:field="*{bookingId}" th:value="${Booking.bookingId}" readonly/></td>
+					</tr>
+					
+					<tr>
+						<th><label for="movieName">Movie Name</label></th>
+						<td>
+							<select id="movieName" th:field="*{movieName}">
+								<option th:each="movie: ${movieList}" th:selected="${Booking.movieName==movie}" th:value="${movie}" th:text="${movie}"></option>
+							</select>
+						</td>
+						<th><label for="venue">Venue</label></th>
+						<td>
+							<select id="venue" th:field="*{venue}">
+								<option value="cinema1">Cinema 1</option>
+								<option value="cinema2">Cinema 2</option>
+								<option value="cinema3">Cinema 3</option>
+								<option value="cinema4">Cinema 4</option>
+								<option value="cinema5">Cinema 5</option>
+							</select>
+						</td>
+						
+						<th><label for="viewingDate">Viewing Date</label></th>
+						<td><input type="date" id="viewingDate" th:field="*{viewingDate}" th:value="${Booking.viewingDate}"/></td>
+					</tr>
+					<tr>
+						<th>Adults : $12.00</th>
+						<td><input type="number" id="tickAdult" th:field="*{tickAdult}" th:value="${Booking.tickAdult}"/></td>
+	
+						<th>Senior/Student: $8.00</th>
+						<td><input type="number" id="tickSenStu" th:field="*{tickSenStu}" th:value="${Booking.tickSenStu}" /></td>
+	
+						<th>Children : $6.50</th>
+						<td><input type="number" id="tickChild" th:field="*{tickChild}" th:value="${Booking.tickChild}"/></td>
+					</tr>
 
-					<th>Senior/Student: $8.00</th>
-					<td><input type="number" id="tickSenStu" th:field="*{tickSenStu}" th:value="${Booking.tickSenStu}" /></td>
-
-					<th>Children : $6.50</th>
-					<td><input type="number" id="tickChild" th:field="*{tickChild}" th:value="${Booking.tickChild}"/></td>
-				</tr>
-				<tr>
-					<th><label for="viewingDate">Viewing Date</label></th>
-					<td><input type="date" id="viewingDate" th:field="*{viewingDate}" th:value="${Booking.viewingDate}"/></td>
-				</tr>
-				<tr>
-					<th><label for="venue">Venue</label></th>
-					<td>
-						<select id="venue" th:field="*{venue}">
-							<option value="cinema1">Cinema 1</option>
-							<option value="cinema2">Cinema 2</option>
-							<option value="cinema3">Cinema 3</option>
-							<option value="cinema4">Cinema 4</option>
-							<option value="cinema5">Cinema 5</option>
-						</select>
-					</td>
-				</tr>
-			</table>
-			<input type="hidden" id="custId" th:field="*{custId}" th:value="${Booking.custId}"/>
-			<input class="btn btn-primary" type="submit" value="Update" />
-		</form>
+				</table>
+				<input type="hidden" id="custId" th:field="*{custId}" th:value="${Booking.custId}"/>
+				<input class="btn btn-primary" type="submit" value="Update" />
+			</form>
+		</div>
 	</body>
 		<div th:include="fragment :: scripts"></div>
 </html>

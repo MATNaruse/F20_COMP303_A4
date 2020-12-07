@@ -9,37 +9,39 @@
 <html xmlns:th="http://thymeleaf.org">
 	<head th:include="fragment :: header"/>
 	<body class="container">
-		<div th:replace="fragment :: navbar"></div>		
-		<h1>Confirm Delete Booking</h1>
-		<table class="table">
-				<tr>
-					<th>Movie Name</th>
-					<td><p th:text="${booking.movieName}"/></td>
-				</tr>
-				<tr>
-					<th>Purchase Date</th>
-					<td><p th:text="${booking.purchaseDate}"/></td>
-				</tr>
-				<tr>
-					<th>Viewing Date</th>
-					<td><p th:text="${booking.viewingDate}"/></td>
-				</tr>
-				<tr>
-					<th>Amount Paid</th>
-					<td><p th:text="${booking.amountPaid}"/></td>
-				</tr>
-				<tr>
-					<th>Venue</th>
-					<td><p th:text="${booking.venue}"/></td>
-				</tr>
-				<tr>
-					<th>Customer Name</th>
-					<td><p th:text="${custName}"/></td>
-				</tr>
+		<div th:replace="fragment :: navbar"></div>	
+		<div class="card r m-3 p-2">	
+			<h1 class="card-title">Confirm Delete Booking</h1>
+			<table class="table">
+					<tr>
+						<th>Movie Name</th>
+						<td><p th:text="${booking.movieName}"/></td>
+					</tr>
+					<tr>
+						<th>Purchase Date</th>
+						<td><p th:text="${booking.purchaseDate}"/></td>
+					</tr>
+					<tr>
+						<th>Viewing Date</th>
+						<td><p th:text="${booking.viewingDate}"/></td>
+					</tr>
+					<tr>
+						<th>Amount Paid</th>
+						<td><p th:text="${booking.amountPaid}"/></td>
+					</tr>
+					<tr>
+						<th>Venue</th>
+						<td><p th:text="${booking.venue}"/></td>
+					</tr>
+					<tr>
+						<th>Customer Name</th>
+						<td><p th:text="${custName}"/></td>
+					</tr>
 			</table>
 			<form action="#" th:action="@{/delete-booking/{bookId}(bookId=${booking.bookingId})}" method="POST">
 				<input type="submit" class="btn btn-danger" value="Delete Booking"/>
 			</form>
+		</div>
 	</body>
 		<div th:include="fragment :: scripts"></div>
 </html>

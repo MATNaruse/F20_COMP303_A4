@@ -9,9 +9,10 @@
 <html xmlns:th="http://thymeleaf.org">
 	<head th:include="fragment :: header"/>
 	<body class="container">
-		<div th:replace="fragment :: navbar"></div>		
-		<h1>Profile</h1>
+		<div th:replace="fragment :: navbar"></div>	
+		<h1 class="card card-title text-center m-5 ">Profile</h1>	
 		<div class="row d-flex justify-content-center">
+		
 			<div class="card col-lg-3 col-sm-10">
 				<table class="table">
 					<tr>
@@ -42,6 +43,10 @@
 						<th>Phone Number</th>
 						<td><p th:text="${loginCust.phoneNumber}" /></td>
 					</tr>
+					<tr>
+						<td><a class="btn btn-danger" th:href="@{/delete-profile/{custId}(custId=${loginCust.custId})}">Delete Profile</a></td>
+						<td><a class="btn btn-warning" th:href="@{/update-profile/{custId}(custId=${loginCust.custId})}">Update Profile</a></td>
+					</tr>
 				</table>
 			</div>
 			<div class="card profile-orders col-lg-8 col-sm-10">
@@ -61,7 +66,8 @@
 					</table>
 				</div>
 				<div th:if="${loginBookings == null}">
-					<h2 class="card-title">You have no Bookings!</h2>
+					<h2 class="card-title text-center">You have no Bookings!</h2>
+					<a class="btn btn-primary text-center" th:href="new-booking">New Booking</a>
 				</div>
 			</div>
 		</div>
