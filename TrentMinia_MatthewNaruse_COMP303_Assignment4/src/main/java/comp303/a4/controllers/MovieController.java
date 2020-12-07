@@ -96,11 +96,11 @@ public class MovieController {
 	}
 	
 	@PostMapping("/update-movie/{id}")
-	public String post_updateMovie(@PathVariable("id") int movieId, @ModelAttribute Movie movie, BindingResult result, Model model) {
+	public String post_updateMovie(@PathVariable("id") int movieId,@RequestParam("imgPoster") MultipartFile poster, @ModelAttribute Movie movie, BindingResult result, Model model) {
 		if(result.hasErrors()) {
 			return get_updateMovie(movie.getMovieId(), model);
 		}
-		
+		processPosterUpload(poster, movie);
 		movieRepo.save(movie);
 		return ("redirect:/view-movies");
 	}

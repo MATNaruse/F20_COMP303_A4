@@ -10,36 +10,38 @@
 	<head th:include="fragment :: header"/>
 	<body class="container">
 		<div th:replace="fragment :: navbar"></div>		
-		<h1>Confirm Delete Movie</h1>
-		<table class="table">
-			<tr>
-				<th>Movie Name</th>
-				<td><p th:text="${delMovie.movieName}"/></td>
-			</tr>
-			<tr>
-				<th>Director</th>
-				<td><p th:text="${delMovie.movieDirector}"/></td>
-			</tr>
-			<tr>
-				<th>Viewing Date</th>
-				<td><p th:text="${delMovie.movieLanguage}"/></td>
-			</tr>
-			<tr>
-				<th>Amount Paid</th>
-				<td><p th:text="${delMovie.movieGenre}"/></td>
-			</tr>
-			<tr>
-				<th>Venue</th>
-				<td><p th:text="${delMovie.movieBlurb}"/></td>
-			</tr>
-			<tr>
-				<th>Customer Name</th>
-				<td><p th:text="${delMovie.movieRating}"/></td>
-			</tr>
-		</table>
-		<form action="#" th:action="@{/delete-movie/{movieId}(movieId=${delMovie.movieId})}" method="POST">
-            <input type="submit" class="btn btn-danger" value="Delete Movie"/>
-		</form>
+		<div class="card r m-3 p-2">	
+			<h1 class="card-title text-center">Confirm Delete Movie</h1>
+			<table class="table">
+				<tr>
+					<th>Movie Name</th>
+					<td><p th:text="${delMovie.movieName}"/></td>
+				</tr>
+				<tr>
+					<th>Director</th>
+					<td><p th:text="${delMovie.movieDirector}"/></td>
+				</tr>
+				<tr>
+					<th>Viewing Date</th>
+					<td><p th:text="${delMovie.movieLanguage}"/></td>
+				</tr>
+				<tr>
+					<th>Amount Paid</th>
+					<td><p th:text="${delMovie.movieGenre}"/></td>
+				</tr>
+				<tr>
+					<th>Venue</th>
+					<td><p th:text="${delMovie.movieBlurb}"/></td>
+				</tr>
+				<tr>
+					<th>Customer Name</th>
+					<td><p th:text="${delMovie.movieRating}"/></td>
+				</tr>
+			</table>
+			<form action="#" th:action="@{/delete-movie/{movieId}(movieId=${delMovie.movieId})}" method="POST">
+	            <input type="submit" class="btn btn-danger" value="Delete Movie"/>
+			</form>
+		</div>
 	</body>
 		<div th:include="fragment :: scripts"></div>
 </html>
