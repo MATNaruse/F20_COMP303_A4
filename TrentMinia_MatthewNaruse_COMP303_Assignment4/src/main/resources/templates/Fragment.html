@@ -32,7 +32,7 @@
 						<a class="nav-link" th:href="@{/profile}">Profile</a>
 					</li>
 					<li class="nav-item" th:if="${#request.getSession().getAttribute('loginCust') != null}">
-						<a class="nav-link" th:href="@{/new-booking}">DEBUG-[New Booking]</a>
+						<a class="nav-link" th:href="@{/new-booking}">New Booking</a>
 					</li>
 					<li class="nav-item" th:if="${#request.getSession().getAttribute('loginCust') != null}">
 						<a class="nav-link" th:href="@{/logout}">Logout</a>

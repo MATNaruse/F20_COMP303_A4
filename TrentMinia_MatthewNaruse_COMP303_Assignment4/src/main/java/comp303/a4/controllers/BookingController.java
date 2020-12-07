@@ -49,16 +49,6 @@ public class BookingController {
 	
 	private static HttpSession session;
 	
-//	@GetMapping("/new-booking")
-//	public ModelAndView get_newBooking(HttpServletRequest request){
-//		ModelAndView MVgetNewBooking;
-//		updateLoginCust(request);
-//		MVgetNewBooking = CustomerController.EnsureLoggedIn("new-booking", request);
-//		List<String> movieList = movieRepo.getAllMovieNames();
-//		MVgetNewBooking.addObject("movieList", movieList);
-//		return MVgetNewBooking;
-//	}
-
 	@GetMapping("/new-booking")
 	public String get_newBooking(Model model, HttpServletRequest request){
 		Customer loginCust = CustomerController.getLoginCust(request);
