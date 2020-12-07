@@ -127,16 +127,30 @@ public class MovieController {
 	
 	// =========================================
 	
+	/**
+	 * Process Poster Image File from Form
+	 * 
+	 * ** See application.properties for modifications to support this feature.
+	 * @param poster MultipartFile Image
+	 * @param movie Movie Object
+	 */
 	private void processPosterUpload(MultipartFile poster, Movie movie) {
 		if(!poster.isEmpty()) {
+			// If the poster was successfully read
 			try {
 				System.out.println(poster.getContentType());
+				// Get Current Working Directory
 				String cwd = new File(".").getCanonicalPath();
+				// Create Image Name from formatted Movie Name
 				String imgName = movie.getMovieName().toLowerCase().replace(" ", "").replace(":", "-").replace("*", "") + ".jpg";
+				// Generate Path to save image to
 				Path toImages = Paths.get(cwd + "\\src\\main\\resources\\static\\images\\" + imgName);
+				// Create the InputStream from the MultipartFile for 'saving'
 				InputStream posterInStr = poster.getInputStream();
+				// Storing the Image in the path
 				Files.copy(posterInStr, toImages, StandardCopyOption.REPLACE_EXISTING);
 				
+				// Setting the Movie.imgSrc to be called later
 				movie.setImgSrc("images/" + imgName);
 			
 				

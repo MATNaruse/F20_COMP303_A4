@@ -43,17 +43,25 @@ public class CustomerController {
 	private static HttpSession session;
 	public static Customer loginCust;
 	
+	/**
+	 * GET: Get Register New Customer Page
+	 */
 	@GetMapping("/register")
 	public String get_register(Model model) {
-		model.addAttribute("Cust", new Customer());
+		model.addAttribute("Cust", new Customer()); // Load Customer into model for form
 		return "register";
 	}
 	
+	/**
+	 * POST: Validate and Save New Customer
+	 */
 	@PostMapping("/register")
 	public String post_register(@Valid @ModelAttribute Customer customer, BindingResult result, Model model, HttpServletRequest request) {
 		if(result.hasErrors()) {return get_register(model);}
 		else {
+			// If No Errors, Save Customer
 			custRepo.save(customer);
+			// Get Session and save new customer as Logged In Customer
 			session = request.getSession();
 			session.setAttribute("loginCust", customer);
 			return "index";
@@ -61,11 +69,17 @@ public class CustomerController {
 	}
 	
 	
+	/**
+	 * GET: Get Login Page
+	 */
 	@GetMapping("/login")
 	public String get_login(Model model) {
 		return "login";
 	}
 	
+	/**
+	 * POST: Validate Customer Login
+	 */
 	@PostMapping("/login")
 	public ModelAndView post_login(@RequestParam("Username") String user, @RequestParam("Password") String pass, HttpServletRequest request) {
 		ModelAndView MVpostLogin = null;
@@ -101,6 +115,9 @@ public class CustomerController {
 		return MVpostLogin;
 	}
 	
+	/**
+	 * GET: Logout Current User
+	 */
 	@GetMapping("/logout")
 	public String get_logout(HttpServletRequest request) {
 		session = request.getSession();
@@ -110,6 +127,9 @@ public class CustomerController {
 		return "index";
 	}
 
+	/**
+	 * GET: Get Profile Page, based on Current Logged In Customer
+	 */
 	@GetMapping("/profile")
 	public String get_profile(Model model, HttpServletRequest request) {
 		// checking login customer
@@ -131,6 +151,9 @@ public class CustomerController {
 	}
 
 	
+	/**
+	 * GET: Get Update Profile Page by ID
+	 */
 	@GetMapping("/update-profile/{id}")
 	public String get_updateProfile(@PathVariable("id") int custId, Model model, HttpServletRequest request) {
 		// checking login customer
@@ -157,6 +180,9 @@ public class CustomerController {
 	}
 	
 	
+	/**
+	 * POST: Validate and Save Updated Customer
+	 */
 	@PostMapping("/update-profile/{id}")
 	public String post_updateProfile(@PathVariable("id") int custId, @Valid @ModelAttribute Customer customer, BindingResult result, Model model, HttpServletRequest request) {
 		if(result.hasErrors()) {
@@ -173,6 +199,9 @@ public class CustomerController {
 		}
 	}
 	
+	/**
+	 * GET: Get Delete Customer Page by ID
+	 */
 	@GetMapping("/delete-profile/{id}")
 	public String get_deleteProfile(@PathVariable("id") int custId, Model model, HttpServletRequest request) {
 		updateLoginCust(request);
@@ -196,9 +225,13 @@ public class CustomerController {
 		}
 	}
 	
+	/**
+	 * POST: Delete Customer from Repo
+	 */
 	@PostMapping("/delete-profile/{id}")
 	public String post_deleteProfile(@PathVariable("id") int custId, HttpServletRequest request, Model model) {
 		custRepo.deleteById(custId);
+		// Get Session and Erase currently logged in customer
 		session = request.getSession();
 		session.setAttribute("loginCust", null);
 		model.addAttribute("err_msg", "Profile Deleted");

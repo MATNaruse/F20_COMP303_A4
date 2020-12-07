@@ -49,14 +49,19 @@ public class BookingController {
 	
 	private static HttpSession session;
 	
+	/**
+	 * GET: Get New Booking Page
+	 */
 	@GetMapping("/new-booking")
 	public String get_newBooking(Model model, HttpServletRequest request){
 		Customer loginCust = CustomerController.getLoginCust(request);
 		if(loginCust == null) {
+			// If tried to access without logging in first
 			model.addAttribute("err_msg", "Please log in first");
 			return "login";
 		}
 		else {
+			// If logged in
 			System.out.println("GET_NEWBOOKING");
 			Booking newbook = new Booking(CustomerController.loginCust.getCustId());
 			newbook.setPurchaseDate(new Date());
@@ -68,29 +73,41 @@ public class BookingController {
 
 	}
 	
+	/**
+	 * POST: Validate and Save New Booking
+	 */
 	@PostMapping("/new-booking")
 	public String post_newBooking(@Valid @ModelAttribute Booking Booking, BindingResult result, Model model, HttpServletRequest request) {
 		System.out.println(result.getAllErrors());
 		System.out.println("POST_NEWBOOKING");
-		if(result.hasErrors()) {return get_newBooking(model, request);}
+		if(result.hasErrors()) {return get_newBooking(model, request);} // If failed/errors, send back to New Booking Pahe
 		else { 
+			// If Successful
 			Booking.setAmountPaid(Booking.getAmountPaid());
-			bookRepo.save(Booking); 
+			bookRepo.save(Booking); // Save to Repo
 			return "index";	
 		}
 	}
 
+	/**
+	 * GET: Viewing a Booking by Id
+	 */
 	@GetMapping("/view-booking/{id}")
 	public String get_viewBooking(@PathVariable("id") int bookId, Model model, HttpServletRequest request) {
 		Customer loginCust = CustomerController.getLoginCust(request);
 		if(loginCust == null) {
+			// If user not logged in, send to Login Screen
 			model.addAttribute("err_msg", "Please log in first");
 			return "login";
 		}
 		else {
+			// If logged in
 			try {
+				// Get the booking and customer from Booking.custId
 				Booking bking =  bookRepo.getOne(bookId);		
 				Customer cust = custRepo.getOne(bking.getCustId());
+				
+				// Pass Both to model to display
 				model.addAttribute("booking", bking);
 				model.addAttribute("custName", cust.getCustName());
 			} catch (Exception e) {
@@ -103,16 +120,24 @@ public class BookingController {
 
 	}
 		
+	/**
+	 * GET: Get Update Booking page by Id
+	 */
 	@GetMapping("/update-booking/{id}")
 	public String get_updateBooking(@PathVariable("id") int bookId, Model model, HttpServletRequest request) {
 		Customer loginCust = CustomerController.getLoginCust(request);
 		if(loginCust == null) {
+			// If user not logged in, send to Login Screen
 			model.addAttribute("err_msg", "Please log in first");
 			return "login";
 		}
 		else {
+			// If logged in
 			try {
+				// Get the Booking by Id
 				Booking bking =  bookRepo.getOne(bookId);
+				
+				// Load Booking entity and MovieList into model
 				model.addAttribute("Booking", bking);
 				model.addAttribute("movieList", movieRepo.getAllMovieNames());
 			} catch (Exception e) {
@@ -125,28 +150,40 @@ public class BookingController {
 		
 	}
 
+	/**
+	 * POST: Validate and Save Updated Booking
+	 */
 	@PostMapping("/update-booking/{id}")
 	public String post_updateBooking(@PathVariable("id") int bookId, @Valid @ModelAttribute Booking booking, BindingResult result, Model model, HttpServletRequest request) {
 		if(result.hasErrors()) {
+			// If Errors, send them back to UpdateBooking
 			return get_updateBooking(booking.getBookingId(), model, request);
 		}
 		booking.setAmountPaid(booking.getAmountPaid());
-		bookRepo.save(booking);
+		bookRepo.save(booking); // Save updated Booking to Repo
 		
 		return "redirect:/" + get_viewBooking(booking.getBookingId(), model, request) + "/" + bookId;
 	}
 	
+	/**
+	 * GET: Get Delete Booking Page by Id
+	 */
 	@GetMapping("/delete-booking/{id}")
 	public String get_deleteBooking(@PathVariable("id") int bookId, Model model, HttpServletRequest request) {
 		Customer loginCust = CustomerController.getLoginCust(request);
 		if(loginCust == null) {
+			// If user not logged in, send to Login Screen
 			model.addAttribute("err_msg", "Please log in first");
 			return "login";
 		}
 		else {
+			// If logged in
 			try {
+				// Get Booking and Customer by ID
 				Booking bking =  bookRepo.getOne(bookId);		
 				Customer cust = custRepo.getOne(bking.getCustId());
+				
+				// Load Booking and Customer data into Model
 				model.addAttribute("booking", bking);
 				model.addAttribute("custName", cust.getCustName());
 			} catch (Exception e) {
@@ -159,6 +196,9 @@ public class BookingController {
 
 	}
 
+	/**
+	 * POST: Delete Selected Booking by ID
+	 */
 	@PostMapping("/delete-booking/{id}")
 	public String post_deleteBooking(@PathVariable("id") int bookId) {
 		bookRepo.deleteById(bookId);

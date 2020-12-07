@@ -21,12 +21,20 @@ public class GeneralController {
 	@Autowired
 	MovieRepo movieRepo;
 	
+	/**
+	 * GET: Get Homepage/Index Page (Called on Root)
+	 */
 	@GetMapping("/")
 	public String root() {
 		System.out.println("RUNNING MAPPING GeneralController:'/' !");
+		// Load Movie Data if Repo is Empty
 		if(movieRepo.count() == 0) {SeedData.loadMovieData(movieRepo);}
 		return "index";
 	}
+	
+	/**
+	 * GET: Get Homepage/Index Page
+	 */
 	@GetMapping("/index")
 	public String index() {
 		return "index";
