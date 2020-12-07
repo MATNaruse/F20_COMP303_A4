@@ -9,8 +9,9 @@
 <html xmlns:th="http://thymeleaf.org">
 	<head th:include="fragment :: header"/>
 	<body class="container">
-		<div th:replace="fragment :: navbar"></div>		
-		<h1>Delete Profile</h1>
+		<div th:replace="fragment :: navbar"></div>
+		<div class="card r m-3 p-2">			
+			<h1 class="card-title text-center">Delete Profile</h1>
 			<table class="table">
 				<tr>
 					<th>User Name</th>
@@ -44,7 +45,8 @@
 			<form action="#" th:action="@{/delete-profile/{custId}(custId=${delCust.custId})}" method="POST">
 				<input type="submit" class="btn btn-danger" value="Delete Profile"/>
 			</form>
+		</div>
 	</body>
-		<div th:include="fragment :: footer"></div>
+		<div th:include="fragment :: scripts"></div>
 </html>
 <!-- NOTE: Update the Profile here like A2 -->

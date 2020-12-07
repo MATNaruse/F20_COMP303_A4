@@ -13,6 +13,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
 
 @Entity
 public class Movie {
@@ -20,13 +22,22 @@ public class Movie {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator="mov_gen")
 	@SequenceGenerator(name="mov_gen", sequenceName="mov_seq")
 	private int movieId;
+	
+	@NotEmpty(message="Movie must have a Name")
 	private String movieName;
+	@NotEmpty(message="Movie must have a Director")
 	private String movieDirector;
+	@NotEmpty(message="Movie must have a Language")
 	private String movieLanguage;
+	@NotEmpty(message="Movie must have a Genre")
 	private String movieGenre;
+	@NotEmpty(message="Movie must have a Blurb")
 	private String movieBlurb;
+	@NotEmpty(message="Movie must have a Rating")
 	private String movieRating; // movie rating for appropriate audiences
+	@Min(value=0)
 	private int duration;
+	
 	private String imgSrc;
 	
 	public int getMovieId() {

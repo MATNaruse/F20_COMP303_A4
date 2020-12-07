@@ -10,7 +10,8 @@
 	<head th:include="fragment :: header"/>
 	<body class="container">
 		<div th:replace="fragment :: navbar"></div>		
-		<h1>View Booking</h1>
+		<div class="card r m-3 p-2">
+			<h1 class="card-title text-center">View Booking</h1>
 			<table class="table">
 				<tr>
 					<th>Movie Name</th>
@@ -41,6 +42,7 @@
 					<td><a class="btn btn-danger" th:href="@{/delete-booking/{bookId}(bookId=${booking.bookingId})}">Delete Booking</a></td>
 				</tr>
 			</table>
+		</div>
 	</body>
-		<div th:include="fragment :: footer"></div>
+		<div th:include="fragment :: scripts"></div>
 </html>

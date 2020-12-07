@@ -10,26 +10,37 @@
 	<head th:include="fragment :: header"/>
 	<body class="container">
 		<div th:replace="fragment :: navbar"></div>		
-		<h1>Login</h1>
-		
-		<form action="login" method="POST">
-			
-			<div th:if="${err_msg != null}">
-				<h5 class="text-center alert alert-danger" th:text="${err_msg}"/>
-			</div>
-			<table class="table">
-				<tr>
-					<th><label for="Username">User Name</label></th>
-					<td><input id="Username" name="Username"/></td>
-				</tr>
-				<tr>
-					<th><label for="Password">Password</label></th>
-					<td><input id="Password" name="Password"/></td>
-				</tr>
-			</table>
-			<input class="btn btn-primary" type="submit"/>
-		</form>
-		<a href="register" class="btn btn-primary">Register New Customer</a>
+		<div class="card text-center m-3 p-2">
+			<h1 class="card-title ">Login</h1>
+
+			<form action="login" method="POST">
+
+				<div th:if="${err_msg != null}">
+					<h5 class="text-center alert alert-danger" th:text="${err_msg}" />
+				</div>
+				<table class="table">
+					<tr>
+						<th>
+							<label for="Username">User Name</label>
+						</th>
+						<td>
+							<input id="Username" name="Username" />
+						</td>
+					</tr>
+					<tr>
+						<th>
+							<label for="Password">Password</label>
+						</th>
+						<td>
+							<input type="password" id="Password"
+								name="Password" />
+						</td>
+					</tr>
+				</table>
+				<input class="btn btn-primary" type="submit" />
+				<a href="register" class="btn btn-primary">Register New Customer</a>
+			</form>
+		</div>
 	</body>
-		<div th:include="fragment :: footer"></div>
+		<div th:include="fragment :: scripts"></div>
 </html>

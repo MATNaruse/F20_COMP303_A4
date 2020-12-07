@@ -125,7 +125,7 @@ public class CustomerController {
 			// Pass logged in customer to Profile
 			model.addAttribute("loginCust", loginCust);
 			List<Booking> bookings = bookRepo.findAllBookingsByCustId(loginCust.getCustId());
-			model.addAttribute("loginBookings", bookings);
+			if(bookings.size() > 0) { model.addAttribute("loginBookings", bookings);}
 			return "profile";
 		}
 	}

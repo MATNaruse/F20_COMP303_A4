@@ -8,6 +8,13 @@
 
 package comp303.a4.controllers;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +32,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -66,9 +74,10 @@ public class MovieController {
 	}
 
 	@PostMapping("/admin/add")
-	public String addMovie(Movie movie, BindingResult result, Model model) {
+	public String addMovie(@RequestParam("imgPoster") MultipartFile poster ,Movie movie, BindingResult result, Model model) {
 		if (result.hasErrors()) return "/admin/new-movie";
-
+		
+		processPosterUpload(poster, movie);
 		movieRepo.save(movie);
 		model.addAttribute("movies", movieRepo.findAll());
 		return ("redirect:/view-movies");
@@ -87,11 +96,11 @@ public class MovieController {
 	}
 	
 	@PostMapping("/update-movie/{id}")
-	public String post_updateMovie(@PathVariable("id") int movieId, @ModelAttribute Movie movie, BindingResult result, Model model) {
+	public String post_updateMovie(@PathVariable("id") int movieId,@RequestParam("imgPoster") MultipartFile poster, @ModelAttribute Movie movie, BindingResult result, Model model) {
 		if(result.hasErrors()) {
 			return get_updateMovie(movie.getMovieId(), model);
 		}
-		
+		processPosterUpload(poster, movie);
 		movieRepo.save(movie);
 		return ("redirect:/view-movies");
 	}
@@ -112,6 +121,29 @@ public class MovieController {
 	public String post_deleteMovie(@PathVariable("id") int movieId) {
 		movieRepo.deleteById(movieId);
 		return "redirect:/view-movies";
+	}
+	
+	
+	
+	// =========================================
+	
+	private void processPosterUpload(MultipartFile poster, Movie movie) {
+		if(!poster.isEmpty()) {
+			try {
+				System.out.println(poster.getContentType());
+				String cwd = new File(".").getCanonicalPath();
+				String imgName = movie.getMovieName().toLowerCase().replace(" ", "").replace(":", "-").replace("*", "") + ".jpg";
+				Path toImages = Paths.get(cwd + "\\src\\main\\resources\\static\\images\\" + imgName);
+				InputStream posterInStr = poster.getInputStream();
+				Files.copy(posterInStr, toImages, StandardCopyOption.REPLACE_EXISTING);
+				
+				movie.setImgSrc("images/" + imgName);
+			
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 }

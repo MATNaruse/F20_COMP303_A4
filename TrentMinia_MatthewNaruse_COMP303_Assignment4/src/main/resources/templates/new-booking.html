@@ -10,7 +10,8 @@
 	<head th:include="fragment :: header"/>
 	<body class="container">
 		<div th:replace="fragment :: navbar"></div>
-		<h1>New Booking</h1>
+		<div class="card text-center m-3 p-2">
+		<h1 class="card-title">New Booking</h1>
 		<form action="#" th:action="new-booking" th:object="${Booking}" method="POST">
 			<table class="table">
 				<tr>
@@ -20,6 +21,19 @@
 							<option th:each="movie: ${movieList}" th:value="${movie}" th:text="${movie}"></option>
 						</select>
 					</td>
+					
+					<th><label for="venue">Venue</label></th>
+					<td>
+						<select id="venue" th:field="*{venue}">
+							<option value="cinema1">Cinema 1</option>
+							<option value="cinema2">Cinema 2</option>
+							<option value="cinema3">Cinema 3</option>
+							<option value="cinema4">Cinema 4</option>
+							<option value="cinema5">Cinema 5</option>
+						</select>
+					</td>
+					<th><label for="viewingDate">Viewing Date</label></th>
+					<td><input type="date" id="viewingDate" th:field="*{viewingDate}"/></td>
 				</tr>
 				<tr>
 					<th>Adults : $12.00</th>
@@ -31,26 +45,11 @@
 					<th>Children : $6.50</th>
 					<td><input type="number" id="tickChild" th:field="*{tickChild}" value="0"/></td>
 				</tr>
-				<tr>
-					<th><label for="viewingDate">Viewing Date</label></th>
-					<td><input type="date" id="viewingDate" th:field="*{viewingDate}"/></td>
-				</tr>
-				<tr>
-					<th><label for="venue">Venue</label></th>
-					<td>
-						<select id="venue" th:field="*{venue}">
-							<option value="cinema1">Cinema 1</option>
-							<option value="cinema2">Cinema 2</option>
-							<option value="cinema3">Cinema 3</option>
-							<option value="cinema4">Cinema 4</option>
-							<option value="cinema5">Cinema 5</option>
-						</select>
-					</td>
-				</tr>
 			</table>
 			<input type="hidden" id="custId" th:field="*{custId}" th:value="${Booking.custId}"/>
 			<input type="submit"/>
 		</form>
+		</div>
 	</body>
-		<div th:include="fragment :: footer"></div>
+		<div th:include="fragment :: scripts"></div>
 </html>

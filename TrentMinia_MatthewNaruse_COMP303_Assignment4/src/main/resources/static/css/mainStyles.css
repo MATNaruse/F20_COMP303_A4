@@ -1,3 +1,13 @@
+body {
+	/*Background Related*/
+	background-image: url("/images/pylz-works-ViI6qkoRfNA-unsplash.jpg");
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-position: center center;	
+}
+
+
 #imgSrcList {
     max-height: 150px; 
     width: auto;

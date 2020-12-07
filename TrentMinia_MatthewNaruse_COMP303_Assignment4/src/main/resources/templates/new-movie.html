@@ -10,46 +10,48 @@
 	<head th:include="fragment :: header"/>
 	<body class="container">
 		<div th:replace="fragment :: navbar"></div>		
-		<h1>New Movie</h1>
-
-		<form action="#" th:action="@{/admin/add}" th:object="${movie}" method="post">
-			<table class="table">
-				<tr>
-					<th><label for="movieName">Movie Name</label></th>
-					<td><input type="text" th:field="*{movieName}" id="movieName" name="movieName"/></td>
-				</tr>
-				<tr>
-					<th><label for="movieDirector">Director</label></th>
-					<td><input type="text" th:field="*{movieDirector}" id="movieDirector" name="movieLanguage"/></td>
-				</tr>
-				<tr>
-					<th><label for="movieLanguage">Movie Language</label></th>
-					<td><input type="text" th:field="*{movieLanguage}" id="movieLanguage" name="movieLanguage"/></td>
-				</tr>
-				<tr>
-					<th><label for="movieGenre">Movie Genre</label></th>
-					<td><input type="text" th:field="*{movieGenre}" id="movieGenre" name="movieGenre"/></td>
-				</tr>
-				<tr>
-					<th><label for="movieBlurb">Description</label></th>
-					<td><input type="text" th:field="*{movieBlurb}" id="movieBlurb" name="movieBlurb"/></td>
-				</tr>
-				<tr>
-					<th><label for="movieRating">Rating</label></th>
-					<td><input type="text" th:field="*{movieRating}" id="movieRating" name="movieRating" placeholder="PG"/></td>
-				</tr>
-				<tr>
-					<th><label for="duration">Duration</label></th>
-					<td><input type="text" th:field="*{duration}" id="duration" name="duration"/></td>
-				</tr>
-				<tr>
-					<th><label for="imgPoster">Upload Movie Poster</label></th>
-					<td><input type="text" th:field="*{imgSrc}" accept="images/*" id="imgPoster" name="imgPoster"/></td>
-				</tr>
-				<tr>
-			</table>
-			<input type="submit"/>
-		</form>
+		<div class="card r m-3 p-2">	
+			<h1 class="card-title text-center">New Movie</h1>
+	
+			<form action="#" th:action="@{/admin/add}" th:object="${movie}" method="post" enctype="multipart/form-data">
+				<table class="table">
+					<tr>
+						<th><label for="movieName">Movie Name</label></th>
+						<td><input type="text" th:field="*{movieName}" id="movieName" name="movieName"/></td>
+					</tr>
+					<tr>
+						<th><label for="movieDirector">Director</label></th>
+						<td><input type="text" th:field="*{movieDirector}" id="movieDirector" name="movieLanguage"/></td>
+					</tr>
+					<tr>
+						<th><label for="movieLanguage">Movie Language</label></th>
+						<td><input type="text" th:field="*{movieLanguage}" id="movieLanguage" name="movieLanguage"/></td>
+					</tr>
+					<tr>
+						<th><label for="movieGenre">Movie Genre</label></th>
+						<td><input type="text" th:field="*{movieGenre}" id="movieGenre" name="movieGenre"/></td>
+					</tr>
+					<tr>
+						<th><label for="movieBlurb">Description</label></th>
+						<td><input type="text" th:field="*{movieBlurb}" id="movieBlurb" name="movieBlurb"/></td>
+					</tr>
+					<tr>
+						<th><label for="movieRating">Rating</label></th>
+						<td><input type="text" th:field="*{movieRating}" id="movieRating" name="movieRating" placeholder="PG"/></td>
+					</tr>
+					<tr>
+						<th><label for="duration">Duration</label></th>
+						<td><input type="text" th:field="*{duration}" id="duration" name="duration"/></td>
+					</tr>
+					<tr>
+						<th><label for="imgPoster">Upload Movie Poster</label></th>
+						<td><input type="file" accept="images/*" id="imgPoster" name="imgPoster"/></td>
+					</tr>
+					<tr>
+				</table>
+				<input class="btn btn-primary" type="submit" value="Add Movie" />
+			</form>
+		</div>
 	</body>
-	<div th:include="fragment :: footer"></div>
+	<div th:include="fragment :: scripts"></div>
 </html>

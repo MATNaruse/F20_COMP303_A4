@@ -10,42 +10,44 @@
 	<head th:include="fragment :: header"/>
 	<body class="container">
 		<div th:replace="fragment :: navbar"></div>	
-		<h1>Update Profile</h1>
-		
-		<form action="#" th:action="@{/update-profile/{custId}(custId=${upCust.custId})}" th:object="${upCust}" method="POST">
-			<input type="hidden" id="custId" th:field="*{custId}" th:value="${upCust.custId}"/>
-			<table class="table">
-				<tr>
-					<th><label for="Username">User Name</label></th>
-					<td><input id="Username" th:field="*{Username}" th:value="${upCust.Username}" readonly/></td>
-				</tr>
-				<tr>
-					<th><label for="Password">Password</label></th>
-					<td><input id="Password" th:field="*{Password}" th:value="${upCust.Password}"/></td>
-				</tr>
-				<tr>
-					<th><label for="custName">Your Name</label></th>
-					<td><input id="custName" th:field="*{custName}" th:value="${upCust.custName}"/></td>
-				</tr>
-				<tr>
-					<th><label for="address">Your Address</label></th>
-					<td><input id="address" th:field="*{address}" th:value="${upCust.address}"/></td>
-				</tr>
-				<tr>
-					<th><label for="city">City</label></th>
-					<td><input id="city" th:field="*{city}" th:value="${upCust.city}"/></td>
-				</tr>
-				<tr>
-					<th><label for="email">Email</label></th>
-					<td><input id="email" th:field="*{email}" th:value="${upCust.email}"/></td>
-				</tr>
-				<tr>
-					<th><label for="phoneNumber">Phone Number</label></th>
-					<td><input id="phoneNumber" th:field="*{phoneNumber}" th:value="${upCust.phoneNumber}"/></td>
-				</tr>
-			</table>
-			<input type="submit"/>
-		</form>
+		<div class="card text-center m-3 p-2">
+			<h1 class="card-title text-center">Update Profile</h1>
+			
+			<form action="#" th:action="@{/update-profile/{custId}(custId=${upCust.custId})}" th:object="${upCust}" method="POST">
+				<input type="hidden" id="custId" th:field="*{custId}" th:value="${upCust.custId}"/>
+				<table class="table">
+					<tr>
+						<th><label for="Username">User Name</label></th>
+						<td><input id="Username" th:field="*{Username}" th:value="${upCust.Username}" readonly/></td>
+					</tr>
+					<tr>
+						<th><label for="Password">Password</label></th>
+						<td><input type="password" id="Password" th:field="*{Password}" th:value="${upCust.Password}"/></td>
+					</tr>
+					<tr>
+						<th><label for="custName">Your Name</label></th>
+						<td><input id="custName" th:field="*{custName}" th:value="${upCust.custName}"/></td>
+					</tr>
+					<tr>
+						<th><label for="address">Your Address</label></th>
+						<td><input id="address" th:field="*{address}" th:value="${upCust.address}"/></td>
+					</tr>
+					<tr>
+						<th><label for="city">City</label></th>
+						<td><input id="city" th:field="*{city}" th:value="${upCust.city}"/></td>
+					</tr>
+					<tr>
+						<th><label for="email">Email</label></th>
+						<td><input id="email" th:field="*{email}" th:value="${upCust.email}"/></td>
+					</tr>
+					<tr>
+						<th><label for="phoneNumber">Phone Number</label></th>
+						<td><input id="phoneNumber" th:field="*{phoneNumber}" th:value="${upCust.phoneNumber}"/></td>
+					</tr>
+				</table>
+				<input type="submit"/>
+			</form>
+		</div>
 	</body>
-		<div th:include="fragment :: footer"></div>
+		<div th:include="fragment :: scripts"></div>
 </html>
