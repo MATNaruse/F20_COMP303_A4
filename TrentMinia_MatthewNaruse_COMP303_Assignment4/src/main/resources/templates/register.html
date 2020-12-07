@@ -20,7 +20,7 @@
 				</tr>
 				<tr>
 					<th><label for="Password">Password</label></th>
-					<td><input id="Password" th:field="*{Password}"/></td>
+					<td><input type="password" id="Password" th:field="*{Password}"/></td>
 				</tr>
 				<tr>
 					<th><label for="custName">Your Name</label></th>
@@ -46,5 +46,5 @@
 			<input type="submit"/>
 		</form>
 	</body>
-		<div th:include="fragment :: footer"></div>
+		<div th:include="fragment :: scripts"></div>
 </html>
